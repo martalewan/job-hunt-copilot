@@ -5,6 +5,8 @@ import {
     FiStar,
     FiXCircle,
 } from 'react-icons/fi';
+import type { Job } from '../types/job';
+import { SidebarStats } from './SidebarStats';
 
 export type ActiveView =
     | 'all'
@@ -16,6 +18,7 @@ export type ActiveView =
 type SideBarProps = {
     activeView: ActiveView;
     setActiveView: (view: ActiveView) => void;
+    jobs: Job[];
 };
 
 const navItems: {
@@ -33,9 +36,10 @@ const navItems: {
 export function SideBar({
     activeView,
     setActiveView,
+    jobs,
 }: SideBarProps) {
     return (
-        <aside className="sticky top-0 hidden h-screen w-[260px] shrink-0 border-r border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl lg:block">
+        <aside className="flex flex-col sticky top-0 h-screen w-[260px] shrink-0 border-r border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl">
             <div>
                 <p className="text-sm uppercase tracking-[0.2em] text-slate-500">
                     AI Job Assistant
@@ -66,6 +70,7 @@ export function SideBar({
                     );
                 })}
             </nav>
+            <SidebarStats jobs={jobs} />
         </aside>
     );
 }

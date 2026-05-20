@@ -4,6 +4,7 @@ import { JobFilters } from './components/JobFilters';
 import { SideBar } from './components/SideBar';
 import { mockJobs } from './data/mockJobs';
 import type { Job, JobStatus } from './types/job';
+import { EmptyState } from './components/EmptyState';
 
 function App() {
   const [search, setSearch] = useState<string>('');
@@ -65,7 +66,7 @@ function App() {
 
   return (
     <main className="flex min-h-screen bg-[#0a0a0a] text-white">
-      <SideBar activeView={activeView} setActiveView={setActiveView} />
+      <SideBar activeView={activeView} setActiveView={setActiveView} jobs={jobs} />
 
       <section className="flex-1 p-8">
         <div className="mx-auto max-w-5xl space-y-4">
@@ -97,15 +98,21 @@ function App() {
           </div>
 
           <div className="grid gap-4">
-            {filteredJobs.map((job: Job) => (
-              <JobCard
-                key={job.id}
-                job={job}
-                onStatusChange={handleStatusChange}
-                onArchive={handleArchive}
-                onRestore={handleRestore}
-              />
-            ))}
+            {filteredJobs.length === 0 ? (
+              <EmptyState />
+            ) : (
+              <div className="grid gap-4">
+                {filteredJobs.map((job: Job) => (
+                  <JobCard
+                    key={job.id}
+                    job={job}
+                    onStatusChange={handleStatusChange}
+                    onArchive={handleArchive}
+                    onRestore={handleRestore}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
