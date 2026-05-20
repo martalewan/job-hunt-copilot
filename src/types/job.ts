@@ -1,3 +1,5 @@
+export type JobStatus = 'new' | 'interested' | 'applied' | 'rejected';
+
 export type Job = {
     id: string;
     title: string;
@@ -6,5 +8,6 @@ export type Job = {
     remote: boolean;
     tags: string[];
     url: string;
-    status: 'new' | 'interested' | 'applied' | 'rejected';
+    status: JobStatus;
+    archived: boolean;
 };

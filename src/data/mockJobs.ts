@@ -10,6 +10,7 @@ export const mockJobs: Job[] = [
         tags: ['React', 'TypeScript', 'CSS'],
         url: 'https://example.com',
         status: 'new',
+        archived: false,
     },
     {
         id: '2',
@@ -20,5 +21,6 @@ export const mockJobs: Job[] = [
         tags: ['React', 'TypeScript', 'Next.js'],
         url: 'https://example.com',
         status: 'interested',
+        archived: false,
     },
 ];
