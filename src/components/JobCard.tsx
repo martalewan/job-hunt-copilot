@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Job, JobStatus } from '../types/job';
+import { Modal } from './Modal';
 
 type JobCardProps = {
     job: Job;
@@ -17,6 +18,41 @@ export function JobCard({
     const [letter, setLetter] = useState('');
     const [isLetterOpen, setIsLetterOpen] = useState(false);
     const [isGenerating, setIsGenerating] = useState(false);
+
+    const [recruiterMessage, setRecruiterMessage] = useState('');
+    const [isRecruiterMessageOpen, setIsRecruiterMessageOpen] = useState(false);
+    const [isGeneratingMessage, setIsGeneratingMessage] = useState(false);
+
+    async function generateRecruiterMessage() {
+        try {
+            setIsGeneratingMessage(true);
+
+            const response = await fetch(
+                'http://localhost:4000/api/letters/recruiter-message',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        jobTitle: job.title,
+                        company: job.company,
+                        location: job.location,
+                        skills: job.tags.join(', '),
+                    }),
+                }
+            );
+
+            const data = await response.json();
+
+            setRecruiterMessage(data.message);
+            setIsRecruiterMessageOpen(true);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsGeneratingMessage(false);
+        }
+    }
 
     async function generateLetter() {
         try {
@@ -152,63 +188,56 @@ export function JobCard({
                     <p className="mb-3 text-[11px] uppercase tracking-[0.18em] text-slate-500">
                         AI Tools
                     </p>
-
-                    <button
-                        onClick={generateLetter}
-                        disabled={isGenerating}
-                        className="
-              inline-flex items-center gap-2
-              rounded-2xl
-              border border-cyan-500/20
-              bg-cyan-500/10
-              px-4 py-2.5
-              text-sm font-medium
-              text-cyan-200
-              backdrop-blur-xl
-              transition-all duration-300
-              hover:border-cyan-400/30
-              hover:bg-cyan-500/15
-              disabled:opacity-50
-            "
-                    >
-                        {isGenerating
-                            ? 'Generating...'
-                            : '✨ Generate AI Letter'}
-                    </button>
-                </div>
-            </article>
-
-            {isLetterOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md">
-                    <div className="w-full max-w-3xl rounded-[32px] border border-white/10 bg-[#111]/95 p-8 backdrop-blur-2xl">
-                        <div className="flex items-center justify-between">
-                            <h2 className="text-xl font-semibold text-white">
-                                AI Motivation Letter
-                            </h2>
-
-                            <div className="flex gap-2">
-                                <button
-                                    onClick={copyLetter}
-                                    className="rounded-xl border border-white/10 px-3 py-2 text-sm text-slate-300 hover:bg-white/5"
-                                >
-                                    Copy
-                                </button>
-
-                                <button
-                                    onClick={() => setIsLetterOpen(false)}
-                                    className="rounded-xl border border-white/10 px-3 py-2 text-sm text-slate-300 hover:bg-white/5"
-                                >
-                                    Close
-                                </button>
-                            </div>
-                        </div>
-
-                        <div className="mt-6 max-h-[65vh] overflow-y-auto whitespace-pre-wrap text-sm leading-7 text-slate-300">
-                            {letter}
-                        </div>
+                    <div className='flex gap-3'>
+                        <button
+                            onClick={generateLetter}
+                            disabled={isGenerating}
+                            className="
+                                inline-flex items-center gap-2
+                                rounded-2xl
+                                border border-cyan-500/20
+                                bg-cyan-500/10
+                                px-4 py-2.5
+                                text-sm font-medium
+                                text-cyan-200
+                                backdrop-blur-xl
+                                transition-all duration-300
+                                hover:border-cyan-400/30
+                                hover:bg-cyan-500/15
+                                disabled:opacity-50
+                                "
+                        >
+                            {isGenerating
+                                ? 'Generating...'
+                                : '✨ Generate AI Letter'}
+                        </button>
+                        <button
+                            onClick={generateRecruiterMessage}
+                            disabled={isGeneratingMessage}
+                            className="inline-flex items-center gap-2 rounded-2xl border border-violet-500/20 bg-violet-500/10 px-4 py-2.5 text-sm font-medium text-violet-200 backdrop-blur-xl transition-all duration-300 hover:border-violet-400/30 hover:bg-violet-500/15 disabled:opacity-50"
+                        >
+                            {isGeneratingMessage ? 'Generating...' : '💬 Recruiter Message'}
+                        </button>
                     </div>
                 </div>
-            )}
+
+            </article>
+
+            <Modal
+                title="Recruiter Message"
+                content={recruiterMessage}
+                isOpen={isRecruiterMessageOpen}
+                onClose={() => setIsRecruiterMessageOpen(false)}
+                maxWidth="md"
+            />
+
+            <Modal
+                title="AI Motivation Letter"
+                content={letter}
+                isOpen={isLetterOpen}
+                onClose={() => setIsLetterOpen(false)}
+                maxWidth="lg"
+            />
         </>
     );
 }

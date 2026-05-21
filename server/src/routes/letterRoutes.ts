@@ -56,5 +56,53 @@ Requirements:
         });
     }
 });
+router.post('/recruiter-message', async (req, res) => {
+    try {
+        const { jobTitle, company, location, skills } = req.body;
+
+        if (!jobTitle || !company) {
+            return res.status(400).json({
+                message: 'Missing jobTitle or company',
+            });
+        }
+
+        const prompt = `
+Write a short LinkedIn recruiter message.
+
+Candidate:
+- Name: Marta Lewandowska
+- Skills: ${skills || 'React, TypeScript, Tailwind CSS'}
+- Looking for frontend roles in Paris or remote Europe
+
+Job:
+- Title: ${jobTitle}
+- Company: ${company}
+- Location: ${location || 'Not specified'}
+
+Requirements:
+- Friendly and professional
+- Short, max 900 characters
+- Not too formal
+- No fake experience
+- Mention React and TypeScript naturally
+- End with "Best regards, Marta"
+`;
+
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+        });
+
+        return res.json({
+            message: response.text,
+        });
+    } catch (error) {
+        console.error('Recruiter message error:', error);
+
+        return res.status(500).json({
+            message: 'Failed to generate recruiter message',
+        });
+    }
+});
 
 export default router;
