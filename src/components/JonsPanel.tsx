@@ -1,7 +1,7 @@
-import type { Job } from "../../types/job";
-import { EmptyState } from "../EmptyState";
-import { JobFilters } from "../JobFilters";
+import type { Job } from "../types/job";
+import { EmptyState } from "./EmptyState";
 import { FilterChips } from "./FilterChips";
+import { JobFilters } from "./JobFilters";
 import { JobList } from "./JobList";
 
 type JobsPanelProps = {

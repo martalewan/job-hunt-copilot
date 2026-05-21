@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
-import { JobDetailsPanel } from './components/Redesign/JobDetailsPanel';
+import { JobDetailsPanel } from './components/JobDetailsPanel';
 import { mockJobs } from './data/mockJobs';
 import type { Job, JobStatus } from './types/job';
 import { fetchScrapedJobs } from './services/scrapedJobs';
-import { AppRail } from './components/Redesign/AppRail';
-import { JobsPanel } from './components/Redesign/JonsPanel';
+import { AppRail } from './components/AppRail';
+import { JobsPanel } from './components/JonsPanel';
 
 function App() {
   const [search, setSearch] = useState('');

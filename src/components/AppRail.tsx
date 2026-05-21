@@ -2,7 +2,6 @@ import {
     FiHome,
     FiBriefcase,
     FiFileText,
-    FiCpu,
     FiBarChart2,
     FiSettings,
     FiUser,
@@ -17,7 +16,6 @@ const navTopItems = [
     { label: 'Overview', icon: FiHome },
     { label: 'Jobs', icon: FiBriefcase },
     { label: 'Applications', icon: FiFileText },
-    { label: 'AI Assistant', icon: FiCpu },
     { label: 'Analytics', icon: FiBarChart2 },
 ];
 

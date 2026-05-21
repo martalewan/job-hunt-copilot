@@ -53,7 +53,7 @@ export function MatchScoreCard({ score }: MatchScoreCardProps) {
             </div>
 
             <p className="mt-4 text-center text-sm font-medium text-emerald-300">
-                Great Match 🚀
+                Great Match
             </p>
         </Panel>
     );
