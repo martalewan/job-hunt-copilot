@@ -105,4 +105,59 @@ Requirements:
     }
 });
 
+router.post('/analyze-job', async (req, res) => {
+    try {
+        const { jobTitle, company, location, skills, url } = req.body;
+
+        if (!jobTitle || !company) {
+            return res.status(400).json({
+                message: 'Missing jobTitle or company',
+            });
+        }
+
+        const prompt = `
+Analyze this job for Marta Lewandowska.
+
+Candidate:
+- Frontend developer
+- Looking for React / TypeScript roles
+- Interested in Paris or remote Europe
+- Skills: ${skills || 'React, TypeScript, Tailwind CSS, UI development'}
+
+Job:
+- Title: ${jobTitle}
+- Company: ${company}
+- Location: ${location || 'Not specified'}
+- URL: ${url || 'Not provided'}
+
+Return a clear analysis with these sections:
+
+1. Short Summary
+2. Required Skills
+3. Nice To Have Skills
+4. Match Score from 0 to 100
+5. Why It Is A Good Fit
+6. Possible Gaps
+7. Recommendation: Apply / Maybe / Skip
+
+Be concise, practical, and honest. Do not invent details that are not provided.
+`;
+
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+        });
+
+        return res.json({
+            analysis: response.text,
+        });
+    } catch (error) {
+        console.error('Job analysis error:', error);
+
+        return res.status(500).json({
+            message: 'Failed to analyze job',
+        });
+    }
+});
+
 export default router;
