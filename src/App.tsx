@@ -22,6 +22,30 @@ function App() {
 
   const [selectedJob, setSelectedJob] = useState<Job | null>(jobs[0] ?? null);
 
+  const handleSaveLetter = (id: string, generatedLetter: string) => {
+    setJobs((prevJobs) =>
+      prevJobs.map((job) =>
+        job.id === id ? { ...job, generatedLetter } : job
+      )
+    );
+
+    setSelectedJob((prevJob) =>
+      prevJob?.id === id ? { ...prevJob, generatedLetter } : prevJob
+    );
+  };
+
+  const handleSaveNotes = (id: string, notes: string) => {
+    setJobs((prevJobs) =>
+      prevJobs.map((job) =>
+        job.id === id ? { ...job, notes } : job
+      )
+    );
+
+    setSelectedJob((prevJob) =>
+      prevJob?.id === id ? { ...prevJob, notes } : prevJob
+    );
+  };
+
   useEffect(() => {
     localStorage.setItem('jobs', JSON.stringify(jobs));
   }, [jobs]);
@@ -88,7 +112,7 @@ function App() {
           />
 
           <section className="min-h-0 overflow-y-auto">
-            <JobDetailsPanel job={selectedJob} />
+            <JobDetailsPanel job={selectedJob} handleSaveLetter={handleSaveLetter} handleSaveNotes={handleSaveNotes} />
           </section>
         </div>
       )}

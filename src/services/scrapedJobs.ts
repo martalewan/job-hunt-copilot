@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config/api';
 import type { Job } from '../types/job';
 
 type ApiJob = {
@@ -12,7 +13,7 @@ type ApiJob = {
 
 export async function fetchScrapedJobs(): Promise<Job[]> {
     const response = await fetch(
-        'http://localhost:4000/api/jobs'
+        `${API_BASE_URL}/api/jobs`
     );
 
     if (!response.ok) {

@@ -1,4 +1,4 @@
-import type { Job } from "../../types/job";
+import type { Job } from "../types/job";
 
 type View = 'all' | 'interested' | 'applied' | 'rejected' | 'archived';
 

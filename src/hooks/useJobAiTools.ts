@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import type { Job } from '../types/job';
+import { API_BASE_URL } from '../config/api';
 
-const API_URL = 'http://localhost:4000/api/letters';
+const API_URL = `${API_BASE_URL}/api/letters`;
 
 export function useJobAiTools(job: Job) {
     const [letter, setLetter] = useState('');

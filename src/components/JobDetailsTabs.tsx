@@ -3,6 +3,7 @@ export type JobTab =
     | 'Description'
     | 'Company'
     | 'Notes'
+    | 'Documents'
     | 'Activity';
 
 type Props = {
@@ -15,6 +16,7 @@ const tabs: JobTab[] = [
     'Description',
     'Company',
     'Notes',
+    'Documents',
     'Activity',
 ];
 
@@ -29,8 +31,8 @@ export function JobDetailsTabs({
                     key={tab}
                     onClick={() => setActiveTab(tab)}
                     className={`pb-3 ${activeTab === tab
-                            ? 'border-b-2 border-violet-400 text-violet-300'
-                            : 'hover:text-white'
+                        ? 'border-b-2 border-violet-400 text-violet-300'
+                        : 'hover:text-white'
                         }`}
                 >
                     {tab}

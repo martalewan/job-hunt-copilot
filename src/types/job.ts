@@ -52,6 +52,11 @@ export type Job = {
     strengths?: string[];
     missingSkills?: string[];
 
+    // AI
+    generatedLetter?: string;
+    generatedRecruiterMessage?: string;
+    jobAnalysis?: string;
+
     // Personal notes
     notes?: string;
 

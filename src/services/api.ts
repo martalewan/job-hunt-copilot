@@ -1,6 +1,7 @@
+import { API_BASE_URL } from '../config/api';
 import type { Job } from '../types/job';
 
-const API_URL = 'http://localhost:4000/api/letters';
+const API_URL = `${API_BASE_URL}/api/letters`;
 
 export async function generateLetter(
     job: Job,

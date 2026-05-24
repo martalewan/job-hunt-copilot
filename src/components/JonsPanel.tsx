@@ -25,7 +25,7 @@ export function JobsPanel({
     handleImportJobs,
     activeView,
     setActiveView,
-    jobs
+    jobs,
 }: JobsPanelProps) {
     return (
         <section className="flex min-h-0 flex-1 flex-col rounded-xs border border-white/10 bg-white/[0.03] p-4">

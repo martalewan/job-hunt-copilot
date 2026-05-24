@@ -8,14 +8,17 @@ import { JobDetailsTabs } from './JobDetailsTabs';
 import { JobOverview } from './JobOverview';
 import { JobAiAssistant } from './JobAiAssistant';
 import { JobNotesCard } from './JobNotesCard';
+import { JobDocumentsTab } from './JobDocumentsTab';
 
 type Props = {
     job: Job | null;
+    handleSaveLetter: (id: string, generatedLetter: string) => void;
+    handleSaveNotes: (id: string, notes: string) => void;
 };
 
-export function JobDetailsPanel({ job }: Props) {
+export function JobDetailsPanel({ job, handleSaveLetter, handleSaveNotes }: Props) {
     const [activeTab, setActiveTab] =
-        useState<'Overview' | 'Description' | 'Company' | 'Notes' | 'Activity'>(
+        useState<'Overview' | 'Description' | 'Company' | 'Notes' | 'Documents' | 'Activity'>(
             'Overview'
         );
 
@@ -54,7 +57,14 @@ export function JobDetailsPanel({ job }: Props) {
                     )}
 
                     {activeTab === 'Notes' && (
-                        <JobNotesCard notes={job.notes} />
+                        <JobNotesCard
+                            notes={job.notes}
+                            onSaveNotes={(notes: string) => handleSaveNotes(job.id, notes)}
+                        />
+                    )}
+
+                    {activeTab === 'Documents' && (
+                        <JobDocumentsTab job={job} />
                     )}
 
                     {activeTab === 'Activity' && (
@@ -62,7 +72,7 @@ export function JobDetailsPanel({ job }: Props) {
                     )}
                 </div>
 
-                <JobAiAssistant job={job} />
+                <JobAiAssistant job={job} onSaveLetter={handleSaveLetter} />
             </div>
         </div>
     );

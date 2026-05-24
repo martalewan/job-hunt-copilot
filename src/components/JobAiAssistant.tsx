@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { Panel } from './Panel';
 import { AIActionCard } from './AIActionCard';
 import { Modal } from './Modal';
@@ -6,16 +8,32 @@ import type { Job } from '../types/job';
 
 type JobAiAssistantProps = {
     job: Job;
+    onSaveLetter: (id: string, generatedLetter: string) => void;
 };
 
-export function JobAiAssistant({ job }: JobAiAssistantProps) {
+export function JobAiAssistant({
+    job,
+    onSaveLetter,
+}: JobAiAssistantProps) {
     const ai = useJobAiTools(job);
+
+    useEffect(() => {
+        if (ai.letter) {
+            onSaveLetter(job.id, ai.letter);
+        }
+    }, [ai.letter, job.id, onSaveLetter]);
 
     return (
         <Panel>
             <h3 className="text-sm font-semibold">
                 AI Assistant
             </h3>
+
+            {job.generatedLetter && (
+                <p className="mt-2 text-xs text-emerald-300">
+                    Letter saved for this job
+                </p>
+            )}
 
             <div className="mt-4 space-y-3">
                 <AIActionCard
