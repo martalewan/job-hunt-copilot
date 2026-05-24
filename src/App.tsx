@@ -1,16 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
 import { JobDetailsPanel } from './components/JobDetailsPanel';
 import { mockJobs } from './data/mockJobs';
-import type { Job, JobStatus } from './types/job';
+import type { Job } from './types/job';
 import { fetchScrapedJobs } from './services/scrapedJobs';
 import { AppRail } from './components/AppRail';
 import { JobsPanel } from './components/JonsPanel';
+import { HomePage } from './components/HomePage';
+
+type AppView = 'home' | 'jobs' | 'analytics' | 'account' | 'settings';
+type JobFilter = 'all' | 'interested' | 'applied' | 'rejected' | 'archived';
 
 function App() {
   const [search, setSearch] = useState('');
-  const [activeView, setActiveView] = useState<
-    'all' | 'interested' | 'applied' | 'rejected' | 'archived'
-  >('all');
+  const [activeView, setActiveView] = useState<AppView>('jobs');
+  const [activeJobFilter, setActiveJobFilter] = useState<JobFilter>('all');
 
   const [jobs, setJobs] = useState<Job[]>(() => {
     const savedJobs = localStorage.getItem('jobs');
@@ -27,85 +30,84 @@ function App() {
     try {
       const importedJobs = await fetchScrapedJobs();
 
-      localStorage.removeItem('jobs');
       setJobs(importedJobs);
       setSelectedJob(importedJobs[0] ?? null);
-
       localStorage.setItem('jobs', JSON.stringify(importedJobs));
     } catch (error) {
       console.error(error);
     }
   }
 
-  function handleStatusChange(id: string, status: JobStatus) {
-    setJobs((prevJobs) =>
-      prevJobs.map((job) =>
-        job.id === id ? { ...job, status } : job
-      )
-    );
-  }
-
-  function handleRestore(id: string) {
-    setJobs((prevJobs) =>
-      prevJobs.map((job) =>
-        job.id === id ? { ...job, archived: false } : job
-      )
-    );
-  }
-
-  function handleArchive(id: string) {
-    setJobs((prevJobs) =>
-      prevJobs.map((job) =>
-        job.id === id ? { ...job, archived: true } : job
-      )
-    );
-  }
-
   const filteredJobs = useMemo(() => {
     return jobs
       .filter((job) => {
-        if (activeView === 'archived') return job.archived;
-        if (activeView === 'all') return !job.archived;
+        if (activeJobFilter === 'archived') return job.archived;
+        if (activeJobFilter === 'all') return !job.archived;
 
-        return !job.archived && job.status === activeView;
+        return !job.archived && job.status === activeJobFilter;
       })
       .filter((job) => {
-        const value =
-          `${job.title} ${job.company} ${job.location} ${job.tags.join(
-            ' '
-          )}`.toLowerCase();
+        const value = `${job.title} ${job.company} ${job.location} ${job.tags.join(
+          ' '
+        )}`.toLowerCase();
 
         return value.includes(search.toLowerCase());
       });
-  }, [jobs, search, activeView]);
+  }, [jobs, search, activeJobFilter]);
 
   return (
-    <main className="grid h-screen grid-cols-[260px_420px_1fr] gap-4 bg-[#08090d] p-4 text-white">
-      <AppRail
-        activeView={activeView}
-        setActiveView={(view) =>
-          setActiveView(view as typeof activeView)
-        }
-      />
+    <main className="grid h-screen grid-cols-[260px_1fr] gap-4 bg-[#08090d] p-4 text-white">
+      <AppRail activeView={activeView} setActiveView={setActiveView} />
 
-      <JobsPanel
-        search={search}
-        setSearch={setSearch}
-        filteredJobs={filteredJobs}
-        selectedJob={selectedJob}
-        setSelectedJob={setSelectedJob}
-        handleImportJobs={handleImportJobs}
-        activeView={activeView}
-        setActiveView={(view) =>
-          setActiveView(view as typeof activeView)
-        }
-        jobs={jobs}
-      />
+      {activeView === 'home' && <HomePage jobs={jobs} />}
 
-      <section className="overflow-y-auto">
-        <JobDetailsPanel job={selectedJob} />
-      </section>
+      {activeView === 'analytics' && (
+        <PageShell title="Analytics">Analytics coming soon.</PageShell>
+      )}
+
+      {activeView === 'account' && (
+        <PageShell title="Account">Account page coming soon.</PageShell>
+      )}
+
+      {activeView === 'settings' && (
+        <PageShell title="Settings">Settings page coming soon.</PageShell>
+      )}
+
+      {activeView === 'jobs' && (
+        <div className="grid min-w-0 grid-cols-[420px_1fr] gap-4">
+          <JobsPanel
+            search={search}
+            setSearch={setSearch}
+            filteredJobs={filteredJobs}
+            selectedJob={selectedJob}
+            setSelectedJob={setSelectedJob}
+            handleImportJobs={handleImportJobs}
+            activeView={activeJobFilter}
+            setActiveView={(view) => setActiveJobFilter(view as JobFilter)}
+            jobs={jobs}
+          />
+
+          <section className="min-h-0 overflow-y-auto">
+            <JobDetailsPanel job={selectedJob} />
+          </section>
+        </div>
+      )}
     </main>
+  );
+}
+
+function PageShell({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="rounded-xs border border-white/10 bg-white/[0.03] p-6">
+      <h1 className="text-3xl font-semibold">{title}</h1>
+      <div className="mt-4 text-slate-400">{children}</div>
+    </section>
   );
 }
 
