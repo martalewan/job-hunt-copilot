@@ -191,19 +191,4 @@ function App() {
   );
 }
 
-function PageShell({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section className="glass-panel rounded-md p-6">
-      <h1 className="text-3xl font-semibold">{title}</h1>
-      <div className="muted mt-4">{children}</div>
-    </section>
-  );
-}
-
 export default App;
