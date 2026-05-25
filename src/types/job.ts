@@ -12,6 +12,7 @@ export type Job = {
 
     // Technologies
     tags: string[];
+    source?: string;
 
     // Tracking
     status: JobStatus;

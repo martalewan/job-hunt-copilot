@@ -1,4 +1,4 @@
-import type { Job } from '../../types/job';
+import type { Job } from '../types/job';
 import { JobSummaryCard } from './JobSummaryCard';
 
 import { MatchScoreCard } from './MatchScoreCard';

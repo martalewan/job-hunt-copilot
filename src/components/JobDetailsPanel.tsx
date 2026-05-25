@@ -31,7 +31,9 @@ export function JobDetailsPanel({ job, handleSaveLetter, handleSaveNotes, handle
             </Panel>
         );
     }
-    console.log(job);
+
+    const description = formatDescription(job.description, job.descriptionType);
+
     return (
         <div className="h-full overflow-y-auto rounded-sm border border-white/10 bg-[#080d18] p-5">
             <JobDetailsHeader job={job} />
@@ -50,13 +52,28 @@ export function JobDetailsPanel({ job, handleSaveLetter, handleSaveNotes, handle
                     {activeTab === 'Description' && (
                         <Panel>
                             {job.descriptionType === 'preview' && (
-                                <p className="mb-3 text-xs font-medium uppercase tracking-wide text-amber-300">
-                                    Preview from source - open the job post for the full description.
-                                </p>
+                                <div className="mb-4 rounded-sm border border-amber-300/20 bg-amber-300/10 p-3">
+                                    <p className="text-xs font-medium uppercase tracking-wide text-amber-200">
+                                        Preview only
+                                    </p>
+                                    <p className="mt-1 text-sm leading-6 text-amber-50/80">
+                                        This source only provides a short search excerpt, not the full job description.
+                                    </p>
+                                </div>
                             )}
+
                             <p className="whitespace-pre-line text-sm leading-6 text-slate-300">
-                                {job.description || 'No description available from this source yet. Open the job link to read the full posting.'}
+                                {description || 'No description available from this source yet.'}
                             </p>
+
+                            <a
+                                className="mt-4 inline-flex text-sm font-medium text-sky-300 hover:text-sky-200"
+                                href={job.url}
+                                rel="noreferrer"
+                                target="_blank"
+                            >
+                                Open full job post
+                            </a>
                         </Panel>
                     )}
 
@@ -87,4 +104,26 @@ export function JobDetailsPanel({ job, handleSaveLetter, handleSaveNotes, handle
             </div>
         </div>
     );
+}
+
+function formatDescription(
+    description: string | undefined,
+    type: Job['descriptionType']
+) {
+    const text = (description ?? '').trim();
+
+    if (type !== 'preview') return text;
+
+    return cleanPreviewStart(text);
+}
+
+function cleanPreviewStart(text: string) {
+    if (!text) return text;
+
+    const withoutDanglingIntro = text.replace(
+        /^[a-z][^.?!]{0,90}[.?!]\s+(?=[A-ZÀ-ÖØ-Þ])/,
+        ''
+    );
+
+    return withoutDanglingIntro || text;
 }

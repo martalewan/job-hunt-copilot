@@ -5,7 +5,7 @@ import {
     FiMoreHorizontal,
 } from 'react-icons/fi';
 
-import type { Job } from '../../types/job';
+import type { Job } from '../types/job';
 
 type Props = {
     job: Job;

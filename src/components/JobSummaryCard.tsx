@@ -5,14 +5,16 @@ import {
 } from 'react-icons/fi';
 
 import { Panel } from './Panel';
-import type { Job } from '../../types/job';
 import { Info } from './Info';
+import type { Job } from '../types/job';
 
 type Props = {
     job: Job;
 };
 
 export function JobSummaryCard({ job }: Props) {
+    const summary = formatSummary(job.description, job.descriptionType);
+
     return (
         <Panel>
             <h3 className="text-sm font-semibold">
@@ -20,12 +22,12 @@ export function JobSummaryCard({ job }: Props) {
             </h3>
 
             <p className="mt-3 text-sm leading-6 text-slate-400">
-                {job.description || 'No description available from this source yet.'}
+                {summary || 'No description available from this source yet.'}
             </p>
 
             {job.descriptionType === 'preview' && (
                 <p className="mt-2 text-xs text-amber-300">
-                    Preview only. Open the posting for the full description.
+                    Preview excerpt. Open the posting for the full description.
                 </p>
             )}
 
@@ -56,4 +58,19 @@ export function JobSummaryCard({ job }: Props) {
             </div>
         </Panel>
     );
+}
+
+function formatSummary(
+    description: string | undefined,
+    type: Job['descriptionType']
+) {
+    const text = (description ?? '').trim();
+    const normalized =
+        type === 'preview'
+            ? text.replace(/^[a-z][^.?!]{0,90}[.?!]\s+(?=[A-ZÀ-ÖØ-Þ])/, '')
+            : text;
+
+    if (normalized.length <= 260) return normalized;
+
+    return `${normalized.slice(0, 260).trim()}...`;
 }

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { JobDetailsPanel } from './components/JobDetailsPanel';
 import { mockJobs } from './data/mockJobs';
 import type { Job } from './types/job';
-import { fetchScrapedJobs } from './services/scrapedJobs';
+import { fetchScrapedJobs, type ScrapedJobsMeta } from './services/scrapedJobs';
 import { AppRail } from './components/AppRail';
 import { JobsPanel } from './components/JonsPanel';
 import { HomePage } from './components/HomePage';
@@ -14,6 +14,9 @@ function App() {
   const [search, setSearch] = useState('');
   const [activeView, setActiveView] = useState<AppView>('jobs');
   const [activeJobFilter, setActiveJobFilter] = useState<JobFilter>('all');
+  const [activeSource, setActiveSource] = useState('all');
+  const [isImporting, setIsImporting] = useState(false);
+  const [jobsMeta, setJobsMeta] = useState<ScrapedJobsMeta | null>(null);
 
   const [jobs, setJobs] = useState<Job[]>(() => {
     const savedJobs = localStorage.getItem('jobs');
@@ -80,15 +83,21 @@ function App() {
     localStorage.setItem('jobs', JSON.stringify(jobs));
   }, [jobs]);
 
-  async function handleImportJobs() {
+  async function handleImportJobs(options: { refresh?: boolean } = {}) {
+    setIsImporting(true);
+
     try {
-      const importedJobs = await fetchScrapedJobs();
+      const result = await fetchScrapedJobs(options);
+      const importedJobs = result.jobs;
 
       setJobs(importedJobs);
       setSelectedJob(importedJobs[0] ?? null);
+      setJobsMeta(result.meta ?? null);
       localStorage.setItem('jobs', JSON.stringify(importedJobs));
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsImporting(false);
     }
   }
 
@@ -103,11 +112,23 @@ function App() {
       .filter((job) => {
         const value = `${job.title} ${job.company} ${job.location} ${job.tags.join(
           ' '
-        )}`.toLowerCase();
+        )} ${job.source ?? ''}`.toLowerCase();
 
         return value.includes(search.toLowerCase());
+      })
+      .filter((job) => {
+        if (activeSource === 'all') return true;
+        return (job.source ?? 'Unknown') === activeSource;
       });
-  }, [jobs, search, activeJobFilter]);
+  }, [jobs, search, activeJobFilter, activeSource]);
+
+  const availableSources = useMemo(
+    () =>
+      Array.from(
+        new Set(jobs.map((job) => job.source ?? 'Unknown'))
+      ).sort(),
+    [jobs]
+  );
 
   return (
     <main className="grid h-screen grid-cols-[260px_1fr] gap-4 bg-[#08090d] p-4 text-white">
@@ -136,9 +157,14 @@ function App() {
             selectedJob={selectedJob}
             setSelectedJob={setSelectedJob}
             handleImportJobs={handleImportJobs}
+            isImporting={isImporting}
             activeView={activeJobFilter}
             setActiveView={(view) => setActiveJobFilter(view as JobFilter)}
             jobs={jobs}
+            activeSource={activeSource}
+            setActiveSource={setActiveSource}
+            availableSources={availableSources}
+            jobsMeta={jobsMeta}
           />
 
           <section className="min-h-0 overflow-y-auto">

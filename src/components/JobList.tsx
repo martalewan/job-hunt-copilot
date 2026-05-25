@@ -1,4 +1,4 @@
-import type { Job } from '../../types/job';
+import type { Job } from '../types/job';
 import { JobCard } from './JobCard';
 
 type JobListProps = {

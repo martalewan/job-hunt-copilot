@@ -1,5 +1,5 @@
 import { FiBookmark, FiMapPin } from 'react-icons/fi';
-import type { Job } from '../../types/job';
+import type { Job } from '../types/job';
 
 type JobCardProps = {
     job: Job;
@@ -8,6 +8,9 @@ type JobCardProps = {
 };
 
 export function JobCard({ job, selected, onSelect }: JobCardProps) {
+    const descriptionLabel = job.descriptionType === 'preview' ? 'Preview' : 'Full';
+    const score = job.matchScore ?? 0;
+
     return (
         <button
             onClick={onSelect}
@@ -21,23 +24,23 @@ export function JobCard({ job, selected, onSelect }: JobCardProps) {
         >
             <div className="min-w-0 flex-1">
                 <div className="flex items-start justify-between gap-3">
-                    <div>
+                    <div className="min-w-0">
                         <p className="text-xs font-medium text-white/80">
                             {job.company}
                         </p>
 
-                        <h2 className="mt-1 text-sm font-semibold text-white">
+                        <h2 className="mt-1 text-sm font-semibold text-white line-clamp-2">
                             {job.title}
                         </h2>
                     </div>
 
-                    <div className="flex flex-col items-start text-right">
+                    <div className="flex shrink-0 flex-col items-end text-right">
                         <span className="rounded-full bg-violet-500/15 px-2 py-1 text-[10px] font-semibold uppercase text-violet-300">
                             {job.status}
                         </span>
 
-                        <p className="mt-1 text-[10px] text-slate-400">
-                            2d ago
+                        <p className="mt-1 rounded-full bg-emerald-400/10 px-2 py-1 text-[10px] font-semibold text-emerald-200">
+                            {score}% match
                         </p>
                     </div>
                 </div>
@@ -47,6 +50,22 @@ export function JobCard({ job, selected, onSelect }: JobCardProps) {
                     {job.location}
                     {job.remote && ' • Remote'}
                 </p>
+
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                    <span className="rounded-md border border-sky-300/15 bg-sky-300/10 px-2 py-1 text-[10px] font-semibold text-sky-100">
+                        {job.source ?? 'Unknown'}
+                    </span>
+
+                    <span
+                        className={`rounded-md border px-2 py-1 text-[10px] font-semibold ${
+                            job.descriptionType === 'preview'
+                                ? 'border-amber-300/20 bg-amber-300/10 text-amber-100'
+                                : 'border-emerald-300/20 bg-emerald-300/10 text-emerald-100'
+                        }`}
+                    >
+                        {descriptionLabel}
+                    </span>
+                </div>
 
                 <div className="mt-3 flex items-center justify-between gap-3">
                     <div className="flex flex-wrap gap-1.5">
