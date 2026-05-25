@@ -1,5 +1,6 @@
 import type { Job } from '../types/job';
 import { JobSummaryCard } from './JobSummaryCard';
+import { getMatchScore } from '../utils/estimateMatchScore';
 
 import { MatchScoreCard } from './MatchScoreCard';
 import { MissingSkillsCard } from './MissingSkillsCard';
@@ -13,7 +14,7 @@ export function JobOverview({ job }: Props) {
     return (
         <>
             <div className="grid grid-cols-3 gap-4">
-                <MatchScoreCard score={job.matchScore ?? 84} />
+                <MatchScoreCard score={getMatchScore(job)} />
 
                 <StrengthsCard
                     strengths={

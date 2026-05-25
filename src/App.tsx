@@ -4,7 +4,7 @@ import { mockJobs } from './data/mockJobs';
 import type { Job } from './types/job';
 import { fetchScrapedJobs, type ScrapedJobsMeta } from './services/scrapedJobs';
 import { AppRail } from './components/AppRail';
-import { JobsPanel } from './components/JonsPanel';
+import { JobsPanel } from './components/JobsPanel';
 import { HomePage } from './components/HomePage';
 
 type AppView = 'home' | 'jobs' | 'analytics' | 'account' | 'settings';
@@ -14,7 +14,6 @@ function App() {
   const [search, setSearch] = useState('');
   const [activeView, setActiveView] = useState<AppView>('jobs');
   const [activeJobFilter, setActiveJobFilter] = useState<JobFilter>('all');
-  const [activeSource, setActiveSource] = useState('all');
   const [isImporting, setIsImporting] = useState(false);
   const [jobsMeta, setJobsMeta] = useState<ScrapedJobsMeta | null>(null);
 
@@ -115,20 +114,8 @@ function App() {
         )} ${job.source ?? ''}`.toLowerCase();
 
         return value.includes(search.toLowerCase());
-      })
-      .filter((job) => {
-        if (activeSource === 'all') return true;
-        return (job.source ?? 'Unknown') === activeSource;
       });
-  }, [jobs, search, activeJobFilter, activeSource]);
-
-  const availableSources = useMemo(
-    () =>
-      Array.from(
-        new Set(jobs.map((job) => job.source ?? 'Unknown'))
-      ).sort(),
-    [jobs]
-  );
+  }, [jobs, search, activeJobFilter]);
 
   return (
     <main className="grid h-screen grid-cols-[260px_1fr] gap-4 bg-[#08090d] p-4 text-white">
@@ -161,9 +148,6 @@ function App() {
             activeView={activeJobFilter}
             setActiveView={(view) => setActiveJobFilter(view as JobFilter)}
             jobs={jobs}
-            activeSource={activeSource}
-            setActiveSource={setActiveSource}
-            availableSources={availableSources}
             jobsMeta={jobsMeta}
           />
 

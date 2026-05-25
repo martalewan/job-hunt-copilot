@@ -36,7 +36,7 @@ export function FilterChips({
     }
 
     return (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5">
             {filters.map((filter) => {
                 const active = activeView === filter.value;
 
@@ -44,7 +44,7 @@ export function FilterChips({
                     <button
                         key={filter.value}
                         onClick={() => setActiveView(filter.value)}
-                        className={`cursor-pointer rounded-md border px-2 py-2 text-[0.7rem] transition ${active
+                        className={`cursor-pointer rounded-md border px-2 py-1 text-[0.68rem] leading-4 transition ${active
                             ? 'border-violet-400/40 bg-violet-500/20 text-white'
                             : 'border-white/10 bg-white/[0.04] text-slate-400 hover:bg-white/[0.08] hover:text-white'
                             }`}

@@ -1,5 +1,6 @@
 import { FiBookmark, FiMapPin } from 'react-icons/fi';
 import type { Job } from '../types/job';
+import { getMatchScore } from '../utils/estimateMatchScore';
 
 type JobCardProps = {
     job: Job;
@@ -9,7 +10,7 @@ type JobCardProps = {
 
 export function JobCard({ job, selected, onSelect }: JobCardProps) {
     const descriptionLabel = job.descriptionType === 'preview' ? 'Preview' : 'Full';
-    const score = job.matchScore ?? 0;
+    const score = getMatchScore(job);
 
     return (
         <button
