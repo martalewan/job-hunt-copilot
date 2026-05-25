@@ -3,9 +3,9 @@ import { JobDetailsPanel } from './components/JobDetailsPanel';
 import { mockJobs } from './data/mockJobs';
 import type { Job } from './types/job';
 import { fetchScrapedJobs, type ScrapedJobsMeta } from './services/scrapedJobs';
-import { AppRail } from './components/AppRail';
 import { JobsPanel } from './components/JobsPanel';
 import { HomePage } from './components/HomePage';
+import { AppNavbar } from './components/AppNavbar';
 
 type AppView = 'home' | 'jobs' | 'analytics' | 'account' | 'settings';
 type JobFilter = 'all' | 'interested' | 'applied' | 'rejected' | 'archived';
@@ -118,8 +118,8 @@ function App() {
   }, [jobs, search, activeJobFilter]);
 
   return (
-    <main className="app-shell flex h-screen flex-col gap-3 p-3">
-      <AppRail activeView={activeView} setActiveView={setActiveView} />
+    <main className="app-shell relative flex h-screen flex-col gap-3 p-3 pt-20">
+      <AppNavbar activeView={activeView} setActiveView={setActiveView} />
 
       <div className="min-h-0 flex-1">
         {activeView === 'home' && <HomePage jobs={jobs} />}
