@@ -36,7 +36,7 @@ export function FilterChips({
     }
 
     return (
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex w-full justify-between gap-1.5">
             {filters.map((filter) => {
                 const active = activeView === filter.value;
 
@@ -44,13 +44,14 @@ export function FilterChips({
                     <button
                         key={filter.value}
                         onClick={() => setActiveView(filter.value)}
-                        className={`cursor-pointer rounded-md px-2 py-1 text-[0.68rem] leading-4 transition ${active
+                        className={`cursor-pointer rounded-md px-1 py-1.5 text-[0.75rem] font-medium leading-none transition ${active
                             ? 'accent-control'
                             : 'glass-control muted'
                             }`}
                     >
                         {filter.label}
-                        <span className="ml-1 text-[0.7rem] opacity-70">
+
+                        <span className="ml-1 text-[0.65rem] opacity-60">
                             {getCount(filter.value)}
                         </span>
                     </button>

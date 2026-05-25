@@ -18,8 +18,7 @@ export function StrengthsCard({
                 {strengths.map((item) => (
                     <li
                         key={item}
-                        className="flex items-center gap-2"
-                    >
+                        className="flex items-center gap-2 text-xs">
                         <FiCheck className="accent-text" />
                         {item}
                     </li>

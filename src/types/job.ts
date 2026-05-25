@@ -66,4 +66,7 @@ export type Job = {
     recruiterName?: string;
     recruiterEmail?: string;
     recruiterLinkedIn?: string;
+
+    //Company
+    companySummary?: string;
 };

@@ -17,7 +17,7 @@ export function MissingSkillsCard({
                 {skills.map((item) => (
                     <li
                         key={item}
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-2 text-xs"
                     >
                         <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-aster-blue)]" />
                         {item}

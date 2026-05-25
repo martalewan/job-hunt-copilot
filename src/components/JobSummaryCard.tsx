@@ -11,27 +11,19 @@ import type { Job } from '../types/job';
 type Props = {
     job: Job;
 };
-
 export function JobSummaryCard({ job }: Props) {
-    const summary = formatSummary(job.description, job.descriptionType);
+    const summary = formatSummary(
+        job.description,
+        job.descriptionType
+    );
 
     return (
         <Panel>
-            <h3 className="text-sm font-semibold">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-white/60">
                 Job Summary
             </h3>
 
-            <p className="muted mt-3 text-sm leading-6">
-                {summary || 'No description available from this source yet.'}
-            </p>
-
-            {job.descriptionType === 'preview' && (
-                <p className="accent-text mt-2 text-xs">
-                    Preview excerpt. Open the posting for the full description.
-                </p>
-            )}
-
-            <div className="mt-5 grid grid-cols-4 gap-4">
+            <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
                 <Info
                     icon={<FiBriefcase />}
                     label="Experience"
@@ -53,9 +45,15 @@ export function JobSummaryCard({ job }: Props) {
                 <Info
                     icon={<FiCalendar />}
                     label="Posted"
-                    value={job.postedAt ?? 'Recently'}
+                    value={formatDate(job.postedAt)}
                 />
             </div>
+
+            {summary && (
+                <p className="mt-4 text-[11px] leading-5 text-white/55">
+                    {summary}
+                </p>
+            )}
         </Panel>
     );
 }
@@ -65,12 +63,27 @@ function formatSummary(
     type: Job['descriptionType']
 ) {
     const text = (description ?? '').trim();
+
     const normalized =
         type === 'preview'
-            ? text.replace(/^[a-z][^.?!]{0,90}[.?!]\s+(?=[A-ZÀ-ÖØ-Þ])/, '')
+            ? text.replace(
+                /^[a-z][^.?!]{0,90}[.?!]\s+(?=[A-ZÀ-ÖØ-Þ])/,
+                ''
+            )
             : text;
 
     if (normalized.length <= 260) return normalized;
 
     return `${normalized.slice(0, 260).trim()}...`;
+}
+
+
+function formatDate(date?: string) {
+    if (!date) return 'Recently';
+
+    return new Date(date).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+    });
 }

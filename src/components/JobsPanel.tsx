@@ -33,24 +33,31 @@ export function JobsPanel({
     jobs,
     jobsMeta,
 }: JobsPanelProps) {
+    const activeJobsCount = jobs.filter((job) => !job.archived).length;
+
     return (
-        <section className="glass-panel flex min-h-0 flex-1 flex-col rounded-md p-3">
-            <div className="shrink-0 space-y-2.5">
-                <div className="flex items-center justify-between gap-3">
-                    <div>
-                        <h1 className="text-2xl font-semibold tracking-tight">Jobs</h1>
-                        {jobsMeta && (
-                            <p className="faint mt-0.5 text-[0.68rem]">
-                                {jobsMeta.cached ? 'Cached' : 'Fresh'}
-                                {jobsMeta.cachedAt
-                                    ? ` ${new Date(jobsMeta.cachedAt).toLocaleTimeString()}`
-                                    : ''}
-                            </p>
-                        )}
+        <section className="glass-panel flex min-h-0 flex-1 flex-col rounded-xs p-6">
+            <div className="shrink-0 space-y-5">
+                <div className="flex items-start justify-between gap-4">
+                    <div className="space-y-1">
+                        <h1 className="text-2xl font-semibold tracking-tight">
+                            Jobs
+                        </h1>
+
+                        <p className="faint text-xs">
+                            {filteredJobs.length} visible · {activeJobsCount} active
+                            {jobsMeta?.cachedAt
+                                ? ` · ${jobsMeta.cached ? "Cached" : "Fresh"} ${new Date(
+                                    jobsMeta.cachedAt
+                                ).toLocaleTimeString([], {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                })}`
+                                : ""}
+                        </p>
                     </div>
 
-
-                    <div className="flex gap-2">
+                    <div className="flex items-center gap-1.5">
                         <button
                             onClick={() => handleImportJobs()}
                             disabled={isImporting}
@@ -68,23 +75,28 @@ export function JobsPanel({
                             aria-label="Refresh jobs"
                             className="accent-control inline-flex h-9 w-9 items-center justify-center rounded-md transition disabled:cursor-not-allowed disabled:opacity-50"
                         >
-                            <FiRefreshCw className={`h-4 w-4 ${isImporting ? 'animate-spin' : ''}`} />
-                        </button></div>
-
+                            <FiRefreshCw
+                                className={`h-4 w-4 ${isImporting ? "animate-spin" : ""
+                                    }`}
+                            />
+                        </button>
+                    </div>
                 </div>
 
-                <div>
+                <div className="pt-1">
                     <JobFilters search={search} setSearch={setSearch} />
                 </div>
 
-                <FilterChips
-                    activeView={activeView}
-                    setActiveView={setActiveView}
-                    jobs={jobs}
-                />
+                <div className="border-t border-white/5 pt-4">
+                    <FilterChips
+                        activeView={activeView}
+                        setActiveView={setActiveView}
+                        jobs={jobs}
+                    />
+                </div>
             </div>
 
-            <div className="mt-3 min-h-0 flex-1 overflow-y-auto pr-2">
+            <div className="mt-5 min-h-0 flex-1 overflow-y-auto pr-2">
                 {filteredJobs.length === 0 ? (
                     <EmptyState />
                 ) : (

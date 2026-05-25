@@ -11,7 +11,7 @@ export function MatchScoreCard({ score }: MatchScoreCardProps) {
 
     return (
         <Panel>
-            <p className="muted text-sm">AI Match Score</p>
+            <p className="text-sm">AI Match Score</p>
 
             <div className="mt-3 flex justify-center">
                 <div className="relative h-32 w-32">

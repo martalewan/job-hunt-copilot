@@ -12,7 +12,7 @@ type Props = {
 
 export function JobOverview({ job }: Props) {
     return (
-        <>
+        <div className='flex flex-col gap-4' >
             <div className="grid grid-cols-3 gap-4">
                 <MatchScoreCard score={getMatchScore(job)} />
 
@@ -37,6 +37,6 @@ export function JobOverview({ job }: Props) {
             </div>
 
             <JobSummaryCard job={job} />
-        </>
+        </div>
     );
 }

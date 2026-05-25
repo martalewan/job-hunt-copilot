@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import { JobDetailsPanel } from './components/JobDetailsPanel';
-import { mockJobs } from './data/mockJobs';
 import type { Job } from './types/job';
 import { fetchScrapedJobs, type ScrapedJobsMeta } from './services/scrapedJobs';
 import { JobsPanel } from './components/JobsPanel';
@@ -19,7 +18,7 @@ function App() {
 
   const [jobs, setJobs] = useState<Job[]>(() => {
     const savedJobs = localStorage.getItem('jobs');
-    return savedJobs ? (JSON.parse(savedJobs) as Job[]) : mockJobs;
+    return savedJobs ? (JSON.parse(savedJobs) as Job[]) : [];
   });
 
   const [selectedJob, setSelectedJob] = useState<Job | null>(jobs[0] ?? null);
@@ -75,6 +74,18 @@ function App() {
 
     setSelectedJob((prevJob) =>
       prevJob?.id === id ? { ...prevJob, notes } : prevJob
+    );
+  };
+
+  const handleSaveCompanySummary = (id: string, companySummary: string) => {
+    setJobs((prevJobs) =>
+      prevJobs.map((job) =>
+        job.id === id ? { ...job, companySummary } : job
+      )
+    );
+
+    setSelectedJob((prevJob) =>
+      prevJob?.id === id ? { ...prevJob, companySummary } : prevJob
     );
   };
 
@@ -159,6 +170,7 @@ function App() {
                 handleSaveNotes={handleSaveNotes}
                 handleSaveRecruiterMessage={handleSaveRecruiterMessage}
                 handleSaveJobAnalysis={handleSaveJobAnalysis}
+                handleSaveCompanySummary={handleSaveCompanySummary}
               />
             </section>
           </div>

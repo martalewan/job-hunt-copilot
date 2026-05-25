@@ -20,7 +20,7 @@ export function Info({
                     {label}
                 </p>
 
-                <p className="font-medium text-white">
+                <p className="font-medium text-white text-[11px]">
                     {value}
                 </p>
             </div>

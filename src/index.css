@@ -26,12 +26,6 @@ body {
   color: var(--color-light);
 }
 
-button,
-input,
-textarea {
-  font: inherit;
-}
-
 .app-shell {
   background:
     radial-gradient(circle at 20% 0%, rgba(104, 184, 255, 0.14), transparent 28rem),
