@@ -3,14 +3,13 @@ type AppView =
     | 'jobs'
     | 'analytics'
     | 'account'
-    | 'settings';
 
 type AppNavbarProps = {
     activeView: AppView;
     setActiveView: (view: AppView) => void;
 };
 
-const navTopItems: {
+const items: {
     label: string;
     view: AppView;
 }[] = [
@@ -20,21 +19,11 @@ const navTopItems: {
         { label: 'Account', view: 'account' },
     ];
 
-const navBottomItems: {
-    label: string;
-    view: AppView;
-}[] = [
-        { label: 'Settings', view: 'settings' },
-    ];
 
 export function AppNavbar({
     activeView,
     setActiveView,
 }: AppNavbarProps) {
-    const items = [
-        ...navTopItems,
-        ...navBottomItems,
-    ];
 
     return (
         <header className="absolute top-0 left-0 right-0 z-50 border-b border-white/5 bg-(--color-dark-soft)">

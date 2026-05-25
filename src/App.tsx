@@ -6,8 +6,9 @@ import { JobsPanel } from './components/JobsPanel';
 import { HomePage } from './components/HomePage';
 import { AppNavbar } from './components/AppNavbar';
 import { AnalyticsPage } from './components/AnalyticsPage';
+import { AccountPage } from './components/AccountPage';
 
-type AppView = 'home' | 'jobs' | 'analytics' | 'account' | 'settings';
+type AppView = 'home' | 'jobs' | 'analytics' | 'account';
 type JobFilter = 'all' | 'interested' | 'applied' | 'rejected' | 'archived';
 
 function App() {
@@ -153,11 +154,7 @@ function App() {
         )}
 
         {activeView === 'account' && (
-          <PageShell title="Account">Account page coming soon.</PageShell>
-        )}
-
-        {activeView === 'settings' && (
-          <PageShell title="Settings">Settings page coming soon.</PageShell>
+          <AccountPage />
         )}
 
         {activeView === 'jobs' && (
