@@ -44,10 +44,9 @@ export function FilterChips({
                     <button
                         key={filter.value}
                         onClick={() => setActiveView(filter.value)}
-                        className={`cursor-pointer rounded-md px-1 py-1.5 text-[0.75rem] font-medium leading-none transition ${active
-                            ? 'accent-control'
-                            : 'glass-control muted'
-                            }`}
+                        className={`cursor-pointer rounded-md px-1 py-1.5 text-[0.75rem] font-medium leading-none transition ${
+                            active ? 'accent-control' : 'glass-control muted'
+                        }`}
                     >
                         {filter.label}
 

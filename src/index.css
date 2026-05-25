@@ -9,6 +9,21 @@
   --color-aster-blue: #68b8ff;
   --color-aster-blue-soft: rgba(104, 184, 255, 0.16);
   --color-aster-blue-line: rgba(104, 184, 255, 0.32);
+  --status-new: #c9d3df;
+  --status-new-soft: rgba(201, 211, 223, 0.14);
+  --status-new-line: rgba(201, 211, 223, 0.28);
+  --status-interested: #b8dcff;
+  --status-interested-soft: rgba(184, 220, 255, 0.15);
+  --status-interested-line: rgba(184, 220, 255, 0.34);
+  --status-applied: #bff0d4;
+  --status-applied-soft: rgba(191, 240, 212, 0.15);
+  --status-applied-line: rgba(191, 240, 212, 0.34);
+  --status-rejected: #ffc8d2;
+  --status-rejected-soft: rgba(255, 200, 210, 0.15);
+  --status-rejected-line: rgba(255, 200, 210, 0.34);
+  --status-archived: #d9cff5;
+  --status-archived-soft: rgba(217, 207, 245, 0.15);
+  --status-archived-line: rgba(217, 207, 245, 0.34);
   --glass-bg: rgba(247, 251, 255, 0.055);
   --glass-bg-strong: rgba(247, 251, 255, 0.09);
   --glass-line: rgba(247, 251, 255, 0.12);
@@ -91,4 +106,45 @@ body {
 
 .accent-text {
   color: var(--color-aster-blue);
+}
+
+.status-chip {
+  border: 1px solid var(--status-line, var(--glass-line));
+  background: var(--status-soft, rgba(247, 251, 255, 0.07));
+  color: var(--status-color, var(--color-light-muted));
+}
+
+.status-chip:hover {
+  border-color: var(--status-color, var(--glass-line));
+  background: color-mix(in srgb, var(--status-soft, rgba(247, 251, 255, 0.07)) 78%, white 6%);
+}
+
+.status-new {
+  --status-color: var(--status-new);
+  --status-soft: var(--status-new-soft);
+  --status-line: var(--status-new-line);
+}
+
+.status-interested {
+  --status-color: var(--status-interested);
+  --status-soft: var(--status-interested-soft);
+  --status-line: var(--status-interested-line);
+}
+
+.status-applied {
+  --status-color: var(--status-applied);
+  --status-soft: var(--status-applied-soft);
+  --status-line: var(--status-applied-line);
+}
+
+.status-rejected {
+  --status-color: var(--status-rejected);
+  --status-soft: var(--status-rejected-soft);
+  --status-line: var(--status-rejected-line);
+}
+
+.status-archived {
+  --status-color: var(--status-archived);
+  --status-soft: var(--status-archived-soft);
+  --status-line: var(--status-archived-line);
 }

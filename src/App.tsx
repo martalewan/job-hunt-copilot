@@ -5,6 +5,7 @@ import { fetchScrapedJobs, type ScrapedJobsMeta } from './services/scrapedJobs';
 import { JobsPanel } from './components/JobsPanel';
 import { HomePage } from './components/HomePage';
 import { AppNavbar } from './components/AppNavbar';
+import { AnalyticsPage } from './components/AnalyticsPage';
 
 type AppView = 'home' | 'jobs' | 'analytics' | 'account' | 'settings';
 type JobFilter = 'all' | 'interested' | 'applied' | 'rejected' | 'archived';
@@ -89,6 +90,18 @@ function App() {
     );
   };
 
+  const handleUpdateJob = (id: string, patch: Partial<Job>) => {
+    setJobs((prevJobs) =>
+      prevJobs.map((job) =>
+        job.id === id ? { ...job, ...patch } : job
+      )
+    );
+
+    setSelectedJob((prevJob) =>
+      prevJob?.id === id ? { ...prevJob, ...patch } : prevJob
+    );
+  };
+
   useEffect(() => {
     localStorage.setItem('jobs', JSON.stringify(jobs));
   }, [jobs]);
@@ -136,7 +149,7 @@ function App() {
         {activeView === 'home' && <HomePage jobs={jobs} />}
 
         {activeView === 'analytics' && (
-          <PageShell title="Analytics">Analytics coming soon.</PageShell>
+          <AnalyticsPage jobs={jobs} />
         )}
 
         {activeView === 'account' && (
@@ -171,6 +184,7 @@ function App() {
                 handleSaveRecruiterMessage={handleSaveRecruiterMessage}
                 handleSaveJobAnalysis={handleSaveJobAnalysis}
                 handleSaveCompanySummary={handleSaveCompanySummary}
+                handleUpdateJob={handleUpdateJob}
               />
             </section>
           </div>

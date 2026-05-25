@@ -10,6 +10,7 @@ import { JobAiAssistant } from './JobAiAssistant';
 import { JobNotesCard } from './JobNotesCard';
 import { JobDocumentsTab } from './JobDocumentsTab';
 import { fetchCompanySummary } from '../services/fetchCompanySummary';
+import { JobActivityTab } from './JobActivityTab';
 
 type Props = {
     job: Job | null;
@@ -18,6 +19,7 @@ type Props = {
     handleSaveRecruiterMessage: (id: string, generatedRecruiterMessage: string) => void;
     handleSaveJobAnalysis: (id: string, jobAnalysis: string) => void;
     handleSaveCompanySummary: (id: string, companySummary: string) => void;
+    handleUpdateJob: (id: string, patch: Partial<Job>) => void;
 };
 
 export function JobDetailsPanel({
@@ -27,6 +29,7 @@ export function JobDetailsPanel({
     handleSaveRecruiterMessage,
     handleSaveJobAnalysis,
     handleSaveCompanySummary,
+    handleUpdateJob,
 }: Props) {
     const [activeTab, setActiveTab] =
         useState<'Overview' | 'Description' | 'Company' | 'Notes' | 'Documents' | 'Activity'>('Overview');
@@ -130,7 +133,9 @@ export function JobDetailsPanel({
 
                     {activeTab === 'Documents' && <JobDocumentsTab job={job} />}
 
-                    {activeTab === 'Activity' && <Panel>Application history</Panel>}
+                    {activeTab === 'Activity' && (
+                        <JobActivityTab job={job} onUpdateJob={handleUpdateJob} />
+                    )}
                 </div>
 
                 <JobAiAssistant

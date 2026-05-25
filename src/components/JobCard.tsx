@@ -11,6 +11,7 @@ type JobCardProps = {
 export function JobCard({ job, selected, onSelect }: JobCardProps) {
     const descriptionLabel = job.descriptionType === 'preview' ? 'Preview' : 'Full';
     const score = getMatchScore(job);
+    const statusClass = job.archived ? 'status-archived' : `status-${job.status}`;
 
     return (
         <button
@@ -36,8 +37,8 @@ export function JobCard({ job, selected, onSelect }: JobCardProps) {
                     </div>
 
                     <div className="flex shrink-0 flex-col items-end text-right">
-                        <span className="badge-accent rounded-full px-2 py-1 text-[10px] font-semibold uppercase">
-                            {job.status}
+                        <span className={`status-chip ${statusClass} rounded-full px-2 py-1 text-[10px] font-semibold uppercase`}>
+                            {job.archived ? 'archived' : job.status}
                         </span>
 
                         <p className="badge-accent mt-1 rounded-full px-2 py-1 text-[10px] font-semibold">
