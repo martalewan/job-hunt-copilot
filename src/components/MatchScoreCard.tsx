@@ -11,7 +11,7 @@ export function MatchScoreCard({ score }: MatchScoreCardProps) {
 
     return (
         <Panel>
-            <p className="text-sm text-slate-400">AI Match Score</p>
+            <p className="muted text-sm">AI Match Score</p>
 
             <div className="mt-3 flex justify-center">
                 <div className="relative h-32 w-32">
@@ -26,7 +26,7 @@ export function MatchScoreCard({ score }: MatchScoreCardProps) {
                             cy="64"
                             r={radius}
                             fill="none"
-                            stroke="rgba(255,255,255,0.08)"
+                            stroke="var(--glass-line)"
                             strokeWidth="10"
                         />
 
@@ -35,7 +35,7 @@ export function MatchScoreCard({ score }: MatchScoreCardProps) {
                             cy="64"
                             r={radius}
                             fill="none"
-                            stroke="rgb(74 222 128)"
+                            stroke="var(--color-aster-blue)"
                             strokeWidth="10"
                             strokeLinecap="round"
                             strokeDasharray={circumference}
@@ -52,7 +52,7 @@ export function MatchScoreCard({ score }: MatchScoreCardProps) {
                 </div>
             </div>
 
-            <p className="mt-4 text-center text-sm font-medium text-emerald-300">
+            <p className="accent-text mt-4 text-center text-sm font-medium">
                 Great Match
             </p>
         </Panel>

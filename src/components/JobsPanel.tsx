@@ -34,13 +34,13 @@ export function JobsPanel({
     jobsMeta,
 }: JobsPanelProps) {
     return (
-        <section className="flex min-h-0 flex-1 flex-col rounded-xs border border-white/10 bg-white/[0.03] p-3">
+        <section className="glass-panel flex min-h-0 flex-1 flex-col rounded-md p-3">
             <div className="shrink-0 space-y-2.5">
                 <div className="flex items-center justify-between gap-3">
                     <div>
                         <h1 className="text-2xl font-semibold tracking-tight">Jobs</h1>
                         {jobsMeta && (
-                            <p className="mt-0.5 text-[0.68rem] text-slate-500">
+                            <p className="faint mt-0.5 text-[0.68rem]">
                                 {jobsMeta.cached ? 'Cached' : 'Fresh'}
                                 {jobsMeta.cachedAt
                                     ? ` ${new Date(jobsMeta.cachedAt).toLocaleTimeString()}`
@@ -56,7 +56,7 @@ export function JobsPanel({
                             disabled={isImporting}
                             title="Import jobs"
                             aria-label="Import jobs"
-                            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-white/10 bg-white/[0.05] text-white transition hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-50"
+                            className="glass-control inline-flex h-9 w-9 items-center justify-center rounded-md transition disabled:cursor-not-allowed disabled:opacity-50"
                         >
                             <FiDownload className="h-4 w-4" />
                         </button>
@@ -66,7 +66,7 @@ export function JobsPanel({
                             disabled={isImporting}
                             title="Refresh jobs"
                             aria-label="Refresh jobs"
-                            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-sky-300/20 bg-sky-300/10 text-sky-100 transition hover:bg-sky-300/15 disabled:cursor-not-allowed disabled:opacity-50"
+                            className="accent-control inline-flex h-9 w-9 items-center justify-center rounded-md transition disabled:cursor-not-allowed disabled:opacity-50"
                         >
                             <FiRefreshCw className={`h-4 w-4 ${isImporting ? 'animate-spin' : ''}`} />
                         </button></div>

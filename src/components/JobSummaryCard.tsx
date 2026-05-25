@@ -21,12 +21,12 @@ export function JobSummaryCard({ job }: Props) {
                 Job Summary
             </h3>
 
-            <p className="mt-3 text-sm leading-6 text-slate-400">
+            <p className="muted mt-3 text-sm leading-6">
                 {summary || 'No description available from this source yet.'}
             </p>
 
             {job.descriptionType === 'preview' && (
-                <p className="mt-2 text-xs text-amber-300">
+                <p className="accent-text mt-2 text-xs">
                     Preview excerpt. Open the posting for the full description.
                 </p>
             )}

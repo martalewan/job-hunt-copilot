@@ -25,13 +25,13 @@ export function JobDetailsTabs({
     setActiveTab,
 }: Props) {
     return (
-        <div className="mt-5 flex gap-8 border-b border-white/10 text-xs text-slate-400">
+        <div className="muted mt-5 flex gap-8 border-b border-white/10 text-xs">
             {tabs.map((tab) => (
                 <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
                     className={`pb-3 ${activeTab === tab
-                        ? 'border-b-2 border-violet-400 text-violet-300'
+                        ? 'border-b-2 border-[var(--color-aster-blue)] accent-text'
                         : 'hover:text-white'
                         }`}
                 >

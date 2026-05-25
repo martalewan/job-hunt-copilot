@@ -35,7 +35,7 @@ export function JobDetailsPanel({ job, handleSaveLetter, handleSaveNotes, handle
     const description = formatDescription(job.description, job.descriptionType);
 
     return (
-        <div className="h-full overflow-y-auto rounded-sm border border-white/10 bg-[#080d18] p-5">
+        <div className="glass-panel h-full overflow-y-auto rounded-md p-5">
             <JobDetailsHeader job={job} />
 
             <JobDetailsTabs
@@ -52,22 +52,22 @@ export function JobDetailsPanel({ job, handleSaveLetter, handleSaveNotes, handle
                     {activeTab === 'Description' && (
                         <Panel>
                             {job.descriptionType === 'preview' && (
-                                <div className="mb-4 rounded-sm border border-amber-300/20 bg-amber-300/10 p-3">
-                                    <p className="text-xs font-medium uppercase tracking-wide text-amber-200">
+                                <div className="badge-accent mb-4 rounded-md p-3">
+                                    <p className="text-xs font-medium uppercase tracking-wide">
                                         Preview only
                                     </p>
-                                    <p className="mt-1 text-sm leading-6 text-amber-50/80">
+                                    <p className="mt-1 text-sm leading-6 text-white/75">
                                         This source only provides a short search excerpt, not the full job description.
                                     </p>
                                 </div>
                             )}
 
-                            <p className="whitespace-pre-line text-sm leading-6 text-slate-300">
+                            <p className="muted whitespace-pre-line text-sm leading-6">
                                 {description || 'No description available from this source yet.'}
                             </p>
 
                             <a
-                                className="mt-4 inline-flex text-sm font-medium text-sky-300 hover:text-sky-200"
+                                className="accent-text mt-4 inline-flex text-sm font-medium hover:text-white"
                                 href={job.url}
                                 rel="noreferrer"
                                 target="_blank"

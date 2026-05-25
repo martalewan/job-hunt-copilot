@@ -25,45 +25,29 @@ const navBottomItems: { label: string; view: AppView; icon: React.ElementType }[
 ];
 
 export function AppRail({ activeView, setActiveView }: AppRailProps) {
+    const items = [...navTopItems, ...navBottomItems];
+
     return (
-        <aside className="flex w-64 flex-col rounded-xs border-r border-white/10 bg-white/[0.03] p-4">
-            <h1 className="mb-10 text-xl font-semibold text-white">
+        <header className="glass-panel flex h-14 shrink-0 items-center justify-between rounded-md px-3">
+            <h1 className="shrink-0 text-lg font-semibold text-white">
                 Career Copilot
             </h1>
 
-            <nav className="flex h-full flex-col justify-between">
-                <div className="space-y-1">
-                    {navTopItems.map(({ label, view, icon: Icon }) => (
-                        <button
-                            key={view}
-                            onClick={() => setActiveView(view)}
-                            className={`flex w-full items-center rounded-2xl px-4 py-3 text-left text-sm transition ${activeView === view
-                                    ? 'bg-violet-500/20 text-white'
-                                    : 'text-slate-400 hover:bg-white/5 hover:text-white'
-                                }`}
-                        >
-                            <Icon className="mr-3 h-4 w-4" />
-                            {label}
-                        </button>
-                    ))}
-                </div>
-
-                <div className="space-y-1">
-                    {navBottomItems.map(({ label, view, icon: Icon }) => (
-                        <button
-                            key={view}
-                            onClick={() => setActiveView(view)}
-                            className={`flex w-full items-center rounded-2xl px-4 py-3 text-left text-sm transition ${activeView === view
-                                    ? 'bg-violet-500/20 text-white'
-                                    : 'text-slate-400 hover:bg-white/5 hover:text-white'
-                                }`}
-                        >
-                            <Icon className="mr-3 h-4 w-4" />
-                            {label}
-                        </button>
-                    ))}
-                </div>
+            <nav className="flex min-w-0 items-center gap-1 overflow-x-auto">
+                {items.map(({ label, view, icon: Icon }) => (
+                    <button
+                        key={view}
+                        onClick={() => setActiveView(view)}
+                        className={`inline-flex h-9 shrink-0 items-center gap-2 rounded-md px-3 text-sm transition ${activeView === view
+                            ? 'accent-control'
+                            : 'muted hover:text-white'
+                            }`}
+                    >
+                        <Icon className="h-4 w-4" />
+                        {label}
+                    </button>
+                ))}
             </nav>
-        </aside>
+        </header>
     );
 }

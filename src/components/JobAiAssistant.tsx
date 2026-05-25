@@ -47,7 +47,7 @@ export function JobAiAssistant({
             </h3>
 
             {job.generatedLetter && (
-                <p className="mt-2 text-xs text-emerald-300">
+                <p className="accent-text mt-2 text-xs">
                     Letter saved for this job
                 </p>
             )}

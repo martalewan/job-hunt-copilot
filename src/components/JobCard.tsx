@@ -16,17 +16,17 @@ export function JobCard({ job, selected, onSelect }: JobCardProps) {
         <button
             onClick={onSelect}
             className={`
-        group relative w-full rounded-xl border p-4 text-left transition-all
+        group relative w-full rounded-md p-4 text-left transition-all
         ${selected
-                    ? 'border-violet-500 bg-violet-500/10'
-                    : 'border-white/10 bg-[#090b1a] hover:border-violet-400/60'
+                    ? 'accent-control'
+                    : 'glass-panel hover:border-[var(--color-aster-blue-line)]'
                 }
       `}
         >
             <div className="min-w-0 flex-1">
                 <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                        <p className="text-xs font-medium text-white/80">
+                        <p className="muted text-xs font-medium">
                             {job.company}
                         </p>
 
@@ -36,33 +36,29 @@ export function JobCard({ job, selected, onSelect }: JobCardProps) {
                     </div>
 
                     <div className="flex shrink-0 flex-col items-end text-right">
-                        <span className="rounded-full bg-violet-500/15 px-2 py-1 text-[10px] font-semibold uppercase text-violet-300">
+                        <span className="badge-accent rounded-full px-2 py-1 text-[10px] font-semibold uppercase">
                             {job.status}
                         </span>
 
-                        <p className="mt-1 rounded-full bg-emerald-400/10 px-2 py-1 text-[10px] font-semibold text-emerald-200">
+                        <p className="badge-accent mt-1 rounded-full px-2 py-1 text-[10px] font-semibold">
                             {score}% match
                         </p>
                     </div>
                 </div>
 
-                <p className="mt-2 flex items-center gap-1 text-xs text-slate-400">
+                <p className="muted mt-2 flex items-center gap-1 text-xs">
                     <FiMapPin className="h-3 w-3" />
                     {job.location}
                     {job.remote && ' • Remote'}
                 </p>
 
                 <div className="mt-3 flex flex-wrap gap-1.5">
-                    <span className="rounded-md border border-sky-300/15 bg-sky-300/10 px-2 py-1 text-[10px] font-semibold text-sky-100">
+                    <span className="badge rounded-md px-2 py-1 text-[10px] font-semibold">
                         {job.source ?? 'Unknown'}
                     </span>
 
                     <span
-                        className={`rounded-md border px-2 py-1 text-[10px] font-semibold ${
-                            job.descriptionType === 'preview'
-                                ? 'border-amber-300/20 bg-amber-300/10 text-amber-100'
-                                : 'border-emerald-300/20 bg-emerald-300/10 text-emerald-100'
-                        }`}
+                        className="badge rounded-md px-2 py-1 text-[10px] font-semibold"
                     >
                         {descriptionLabel}
                     </span>
@@ -73,20 +69,20 @@ export function JobCard({ job, selected, onSelect }: JobCardProps) {
                         {job.tags.slice(0, 3).map((tag) => (
                             <span
                                 key={tag}
-                                className="rounded-md bg-white/10 px-2 py-1 text-[10px] font-medium text-slate-200"
+                                className="badge rounded-md px-2 py-1 text-[10px] font-medium"
                             >
                                 {tag}
                             </span>
                         ))}
 
                         {job.tags.length > 3 && (
-                            <span className="rounded-md bg-white/10 px-2 py-1 text-[10px] font-medium text-slate-200">
+                            <span className="badge rounded-md px-2 py-1 text-[10px] font-medium">
                                 +{job.tags.length - 3}
                             </span>
                         )}
                     </div>
 
-                    <FiBookmark className="h-4 w-4 shrink-0 text-slate-400 transition group-hover:text-white" />
+                    <FiBookmark className="muted h-4 w-4 shrink-0 transition group-hover:text-white" />
                 </div>
             </div>
         </button>

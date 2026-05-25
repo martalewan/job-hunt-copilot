@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
+:root {
+  --color-dark: #07090f;
+  --color-dark-soft: #0b111d;
+  --color-light: #f7fbff;
+  --color-light-muted: rgba(247, 251, 255, 0.64);
+  --color-light-faint: rgba(247, 251, 255, 0.38);
+  --color-aster-blue: #68b8ff;
+  --color-aster-blue-soft: rgba(104, 184, 255, 0.16);
+  --color-aster-blue-line: rgba(104, 184, 255, 0.32);
+  --glass-bg: rgba(247, 251, 255, 0.055);
+  --glass-bg-strong: rgba(247, 251, 255, 0.09);
+  --glass-line: rgba(247, 251, 255, 0.12);
+  --glass-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -7,4 +22,79 @@
 body {
   margin: 0;
   font-family: system-ui, sans-serif;
+  background: var(--color-dark);
+  color: var(--color-light);
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+.app-shell {
+  background:
+    radial-gradient(circle at 20% 0%, rgba(104, 184, 255, 0.14), transparent 28rem),
+    linear-gradient(180deg, #08101b 0%, var(--color-dark) 52%, #05070b 100%);
+  color: var(--color-light);
+}
+
+.glass-panel {
+  border: 1px solid var(--glass-line);
+  background: linear-gradient(180deg, var(--glass-bg-strong), var(--glass-bg));
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(22px);
+}
+
+.glass-control {
+  border: 1px solid var(--glass-line);
+  background: rgba(247, 251, 255, 0.06);
+  color: var(--color-light);
+  backdrop-filter: blur(18px);
+}
+
+.glass-control:hover {
+  border-color: var(--color-aster-blue-line);
+  background: rgba(247, 251, 255, 0.09);
+}
+
+.glass-control:focus,
+.glass-control:focus-visible {
+  border-color: var(--color-aster-blue);
+  outline: none;
+}
+
+.accent-control {
+  border: 1px solid var(--color-aster-blue-line);
+  background: var(--color-aster-blue-soft);
+  color: var(--color-light);
+  backdrop-filter: blur(18px);
+}
+
+.accent-control:hover {
+  background: rgba(104, 184, 255, 0.22);
+}
+
+.muted {
+  color: var(--color-light-muted);
+}
+
+.faint {
+  color: var(--color-light-faint);
+}
+
+.badge {
+  border: 1px solid var(--glass-line);
+  background: rgba(247, 251, 255, 0.07);
+  color: var(--color-light-muted);
+}
+
+.badge-accent {
+  border: 1px solid var(--color-aster-blue-line);
+  background: var(--color-aster-blue-soft);
+  color: var(--color-light);
+}
+
+.accent-text {
+  color: var(--color-aster-blue);
 }

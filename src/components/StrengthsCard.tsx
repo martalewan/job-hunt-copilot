@@ -20,7 +20,7 @@ export function StrengthsCard({
                         key={item}
                         className="flex items-center gap-2"
                     >
-                        <FiCheck className="text-emerald-400" />
+                        <FiCheck className="accent-text" />
                         {item}
                     </li>
                 ))}

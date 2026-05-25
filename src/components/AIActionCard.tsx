@@ -12,10 +12,10 @@ export function AIActionCard({
     return (
         <button
             onClick={onClick}
-            className="w-full rounded-2xl border border-white/10 bg-white/[0.05] p-4 text-left transition hover:bg-white/[0.08]"
+            className="glass-control w-full rounded-md p-4 text-left transition"
         >
             <h3 className="font-medium text-white">{title}</h3>
-            <p className="mt-1 text-sm text-slate-400">{description}</p>
+            <p className="muted mt-1 text-sm">{description}</p>
         </button>
     );
 }

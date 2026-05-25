@@ -118,50 +118,52 @@ function App() {
   }, [jobs, search, activeJobFilter]);
 
   return (
-    <main className="grid h-screen grid-cols-[260px_1fr] gap-4 bg-[#08090d] p-4 text-white">
+    <main className="app-shell flex h-screen flex-col gap-3 p-3">
       <AppRail activeView={activeView} setActiveView={setActiveView} />
 
-      {activeView === 'home' && <HomePage jobs={jobs} />}
+      <div className="min-h-0 flex-1">
+        {activeView === 'home' && <HomePage jobs={jobs} />}
 
-      {activeView === 'analytics' && (
-        <PageShell title="Analytics">Analytics coming soon.</PageShell>
-      )}
+        {activeView === 'analytics' && (
+          <PageShell title="Analytics">Analytics coming soon.</PageShell>
+        )}
 
-      {activeView === 'account' && (
-        <PageShell title="Account">Account page coming soon.</PageShell>
-      )}
+        {activeView === 'account' && (
+          <PageShell title="Account">Account page coming soon.</PageShell>
+        )}
 
-      {activeView === 'settings' && (
-        <PageShell title="Settings">Settings page coming soon.</PageShell>
-      )}
+        {activeView === 'settings' && (
+          <PageShell title="Settings">Settings page coming soon.</PageShell>
+        )}
 
-      {activeView === 'jobs' && (
-        <div className="grid h-full min-h-0 min-w-0 grid-cols-[420px_1fr] gap-4 overflow-hidden">
-          <JobsPanel
-            search={search}
-            setSearch={setSearch}
-            filteredJobs={filteredJobs}
-            selectedJob={selectedJob}
-            setSelectedJob={setSelectedJob}
-            handleImportJobs={handleImportJobs}
-            isImporting={isImporting}
-            activeView={activeJobFilter}
-            setActiveView={(view) => setActiveJobFilter(view as JobFilter)}
-            jobs={jobs}
-            jobsMeta={jobsMeta}
-          />
-
-          <section className="min-h-0 overflow-y-auto">
-            <JobDetailsPanel
-              job={selectedJob}
-              handleSaveLetter={handleSaveLetter}
-              handleSaveNotes={handleSaveNotes}
-              handleSaveRecruiterMessage={handleSaveRecruiterMessage}
-              handleSaveJobAnalysis={handleSaveJobAnalysis}
+        {activeView === 'jobs' && (
+          <div className="grid h-full min-h-0 min-w-0 grid-cols-[420px_1fr] gap-3 overflow-hidden">
+            <JobsPanel
+              search={search}
+              setSearch={setSearch}
+              filteredJobs={filteredJobs}
+              selectedJob={selectedJob}
+              setSelectedJob={setSelectedJob}
+              handleImportJobs={handleImportJobs}
+              isImporting={isImporting}
+              activeView={activeJobFilter}
+              setActiveView={(view) => setActiveJobFilter(view as JobFilter)}
+              jobs={jobs}
+              jobsMeta={jobsMeta}
             />
-          </section>
-        </div>
-      )}
+
+            <section className="min-h-0 overflow-y-auto">
+              <JobDetailsPanel
+                job={selectedJob}
+                handleSaveLetter={handleSaveLetter}
+                handleSaveNotes={handleSaveNotes}
+                handleSaveRecruiterMessage={handleSaveRecruiterMessage}
+                handleSaveJobAnalysis={handleSaveJobAnalysis}
+              />
+            </section>
+          </div>
+        )}
+      </div>
     </main>
   );
 }
@@ -174,9 +176,9 @@ function PageShell({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-xs border border-white/10 bg-white/[0.03] p-6">
+    <section className="glass-panel rounded-md p-6">
       <h1 className="text-3xl font-semibold">{title}</h1>
-      <div className="mt-4 text-slate-400">{children}</div>
+      <div className="muted mt-4">{children}</div>
     </section>
   );
 }
