@@ -9,6 +9,12 @@ type ApiJob = {
     remote: boolean;
     tags: string[];
     url: string;
+    description?: string;
+    descriptionType?: 'full' | 'preview';
+    postedAt?: string;
+    salaryMin?: number;
+    salaryMax?: number;
+    source?: string;
 };
 
 export async function fetchScrapedJobs(): Promise<Job[]> {

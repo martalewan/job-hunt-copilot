@@ -8,6 +8,12 @@ export type ScrapedJob = {
     remote: boolean;
     tags: string[];
     url: string;
+    description?: string;
+    descriptionType?: 'full' | 'preview';
+    postedAt?: string;
+    salaryMin?: number;
+    salaryMax?: number;
+    source?: string;
 };
 
 export async function scrapeEnglishJobs(): Promise<ScrapedJob[]> {
@@ -67,6 +73,9 @@ export async function scrapeEnglishJobs(): Promise<ScrapedJob[]> {
                 location.toLowerCase().includes('remote'),
             tags: ['Frontend'],
             url: fullUrl,
+            description: `${title} role at ${company || 'a company'} in ${location || 'Paris'}.`,
+            descriptionType: 'preview',
+            source: 'EnglishJobs',
         });
     });
 

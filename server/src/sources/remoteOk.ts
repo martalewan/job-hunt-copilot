@@ -1,4 +1,5 @@
 import type { ScrapedJob } from './englishJobs';
+import { cleanText } from '../utils/cleanText';
 
 type RemoteOkJob = {
     id?: number;
@@ -6,6 +7,11 @@ type RemoteOkJob = {
     company?: string;
     location?: string;
     tags?: string[];
+    description?: string;
+    date?: string;
+    apply_url?: string;
+    salary_min?: number;
+    salary_max?: number;
     url?: string;
 };
 
@@ -25,8 +31,13 @@ export async function scrapeRemoteOk(): Promise<ScrapedJob[]> {
         .filter((job) => {
             if (!job.position) return false;
 
-            const text =
-                `${job.position} ${job.tags?.join(' ') ?? ''}`.toLowerCase();
+            const text = [
+                job.position,
+                job.tags?.join(' '),
+                cleanText(job.description ?? ''),
+            ]
+                .join(' ')
+                .toLowerCase();
 
             return (
                 text.includes('frontend') ||
@@ -43,6 +54,12 @@ export async function scrapeRemoteOk(): Promise<ScrapedJob[]> {
             location: job.location ?? 'Remote',
             remote: true,
             tags: job.tags ?? ['Remote'],
-            url: job.url ?? '',
+            url: job.url ?? job.apply_url ?? '',
+            description: cleanText(job.description ?? ''),
+            descriptionType: 'full',
+            postedAt: job.date,
+            salaryMin: job.salary_min,
+            salaryMax: job.salary_max,
+            source: 'RemoteOK',
         }));
 }

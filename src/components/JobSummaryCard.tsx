@@ -20,8 +20,14 @@ export function JobSummaryCard({ job }: Props) {
             </h3>
 
             <p className="mt-3 text-sm leading-6 text-slate-400">
-                {job.description}
+                {job.description || 'No description available from this source yet.'}
             </p>
+
+            {job.descriptionType === 'preview' && (
+                <p className="mt-2 text-xs text-amber-300">
+                    Preview only. Open the posting for the full description.
+                </p>
+            )}
 
             <div className="mt-5 grid grid-cols-4 gap-4">
                 <Info

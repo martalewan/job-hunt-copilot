@@ -21,6 +21,7 @@ export type Job = {
 
     // Details
     description?: string;
+    descriptionType?: 'full' | 'preview';
     requirements?: string[];
     benefits?: string[];
 

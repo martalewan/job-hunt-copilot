@@ -48,7 +48,16 @@ export function JobDetailsPanel({ job, handleSaveLetter, handleSaveNotes, handle
                     )}
 
                     {activeTab === 'Description' && (
-                        <Panel>{job.description}</Panel>
+                        <Panel>
+                            {job.descriptionType === 'preview' && (
+                                <p className="mb-3 text-xs font-medium uppercase tracking-wide text-amber-300">
+                                    Preview from source - open the job post for the full description.
+                                </p>
+                            )}
+                            <p className="whitespace-pre-line text-sm leading-6 text-slate-300">
+                                {job.description || 'No description available from this source yet. Open the job link to read the full posting.'}
+                            </p>
+                        </Panel>
                     )}
 
                     {activeTab === 'Company' && (

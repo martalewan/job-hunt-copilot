@@ -10,6 +10,8 @@ import { scrapeRemotive } from './sources/remotiveJobs';
 import { scrapeRemoteOk } from './sources/remoteOk';
 import { scrapeWeAreDevelopers } from './sources/weAreDevelopers';
 import { scrapeWelcomeToTheJungle } from './sources/welcomeToTheJungle';
+import { scrapeJooble } from './sources/jooble';
+import { scrapeFranceTravail } from './sources/franceTravail';
 
 import { dedupeJobs } from './utils/dedupeJobs';
 import letterRoutes from './routes/letterRoutes';
@@ -29,6 +31,8 @@ app.get('/api/jobs', async (_req, res) => {
             scrapeRemoteOk(),
             scrapeWeAreDevelopers(),
             scrapeWelcomeToTheJungle(),
+            scrapeJooble(),
+            scrapeFranceTravail(),
         ]);
 
         const sourceNames = [
@@ -37,13 +41,21 @@ app.get('/api/jobs', async (_req, res) => {
             'RemoteOK',
             'WeAreDevelopers',
             'WelcomeToTheJungle',
+            'Jooble',
+            'France Travail',
         ];
 
         results.forEach((result, index) => {
             const source = sourceNames[index];
 
             if (result.status === 'fulfilled') {
-                console.log(`${source}: ${result.value.length} jobs`);
+                if (result.value.length === 0) {
+                    console.warn(
+                        `${source}: 0 relevant frontend jobs found in the current source response`
+                    );
+                } else {
+                    console.log(`${source}: ${result.value.length} jobs`);
+                }
             } else {
                 console.error(`${source} failed:`, result.reason);
             }

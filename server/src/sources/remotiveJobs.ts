@@ -1,4 +1,5 @@
 import type { ScrapedJob } from './englishJobs';
+import { cleanText } from '../utils/cleanText';
 
 type RemotiveJob = {
     id: number;
@@ -7,6 +8,9 @@ type RemotiveJob = {
     candidate_required_location: string;
     url: string;
     tags: string[];
+    description?: string;
+    publication_date?: string;
+    salary?: string;
 };
 
 type RemotiveResponse = {
@@ -56,5 +60,9 @@ export async function scrapeRemotive(): Promise<ScrapedJob[]> {
             remote: true,
             tags: job.tags.length ? job.tags : ['Remote'],
             url: job.url,
+            description: cleanText(job.description ?? ''),
+            descriptionType: 'full',
+            postedAt: job.publication_date,
+            source: 'Remotive',
         }));
 }
