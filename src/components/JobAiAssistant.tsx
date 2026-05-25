@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { Panel } from './Panel';
 import { AIActionCard } from './AIActionCard';
 import { Modal } from './Modal';
@@ -9,19 +7,38 @@ import type { Job } from '../types/job';
 type JobAiAssistantProps = {
     job: Job;
     onSaveLetter: (id: string, generatedLetter: string) => void;
+    onSaveRecruiterMessage: (
+        id: string,
+        generatedRecruiterMessage: string
+    ) => void;
+    onSaveJobAnalysis: (id: string, jobAnalysis: string) => void;
 };
 
 export function JobAiAssistant({
     job,
     onSaveLetter,
+    onSaveRecruiterMessage,
+    onSaveJobAnalysis,
 }: JobAiAssistantProps) {
     const ai = useJobAiTools(job);
 
-    useEffect(() => {
-        if (ai.letter) {
-            onSaveLetter(job.id, ai.letter);
+    const handleGenerateLetter = async () => {
+        const letter = await ai.generateLetter();
+
+        if (letter) {
+            onSaveLetter(job.id, letter);
         }
-    }, [ai.letter, job.id, onSaveLetter]);
+    };
+
+    const handleGenerateRecruiterMessage = async () => {
+        const message = await ai.generateRecruiterMessage();
+        if (message) onSaveRecruiterMessage(job.id, message);
+    };
+
+    const handleAnalyzeJob = async () => {
+        const analysis = await ai.analyzeJob();
+        if (analysis) onSaveJobAnalysis(job.id, analysis);
+    };
 
     return (
         <Panel>
@@ -43,7 +60,7 @@ export function JobAiAssistant({
                             : 'Generate Motivation Letter'
                     }
                     description="Create a personalized letter."
-                    onClick={ai.generateLetter}
+                    onClick={handleGenerateLetter}
                 />
 
                 <AIActionCard
@@ -53,7 +70,7 @@ export function JobAiAssistant({
                             : 'Recruiter Message'
                     }
                     description="Write outreach message."
-                    onClick={ai.generateRecruiterMessage}
+                    onClick={handleGenerateRecruiterMessage}
                 />
 
                 <AIActionCard
@@ -63,7 +80,7 @@ export function JobAiAssistant({
                             : 'Analyze Job Fit'
                     }
                     description="Find strengths and gaps."
-                    onClick={ai.analyzeJob}
+                    onClick={handleAnalyzeJob}
                 />
             </div>
 

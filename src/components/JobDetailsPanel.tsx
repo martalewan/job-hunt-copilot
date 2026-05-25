@@ -14,9 +14,11 @@ type Props = {
     job: Job | null;
     handleSaveLetter: (id: string, generatedLetter: string) => void;
     handleSaveNotes: (id: string, notes: string) => void;
+    handleSaveRecruiterMessage: (id: string, generatedRecruiterMessage: string) => void;
+    handleSaveJobAnalysis: (id: string, jobAnalysis: string) => void;
 };
 
-export function JobDetailsPanel({ job, handleSaveLetter, handleSaveNotes }: Props) {
+export function JobDetailsPanel({ job, handleSaveLetter, handleSaveNotes, handleSaveRecruiterMessage, handleSaveJobAnalysis }: Props) {
     const [activeTab, setActiveTab] =
         useState<'Overview' | 'Description' | 'Company' | 'Notes' | 'Documents' | 'Activity'>(
             'Overview'
@@ -29,7 +31,7 @@ export function JobDetailsPanel({ job, handleSaveLetter, handleSaveNotes }: Prop
             </Panel>
         );
     }
-
+    console.log(job);
     return (
         <div className="h-full overflow-y-auto rounded-sm border border-white/10 bg-[#080d18] p-5">
             <JobDetailsHeader job={job} />
@@ -72,7 +74,7 @@ export function JobDetailsPanel({ job, handleSaveLetter, handleSaveNotes }: Prop
                     )}
                 </div>
 
-                <JobAiAssistant job={job} onSaveLetter={handleSaveLetter} />
+                <JobAiAssistant job={job} onSaveLetter={handleSaveLetter} onSaveRecruiterMessage={handleSaveRecruiterMessage} onSaveJobAnalysis={handleSaveJobAnalysis} />
             </div>
         </div>
     );

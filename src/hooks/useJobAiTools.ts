@@ -38,6 +38,8 @@ export function useJobAiTools(job: Job) {
 
             setLetter(data.letter);
             setIsLetterOpen(true);
+
+            return data.letter as string;
         } finally {
             setIsGeneratingLetter(false);
         }
@@ -62,6 +64,8 @@ export function useJobAiTools(job: Job) {
 
             setRecruiterMessage(data.message);
             setIsRecruiterMessageOpen(true);
+
+            return data.message as string;
         } finally {
             setIsGeneratingMessage(false);
         }
@@ -87,6 +91,8 @@ export function useJobAiTools(job: Job) {
 
             setJobAnalysis(data.analysis);
             setIsAnalysisOpen(true);
+
+            return data.analysis as string;
         } finally {
             setIsAnalyzing(false);
         }

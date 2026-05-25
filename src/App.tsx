@@ -34,6 +34,36 @@ function App() {
     );
   };
 
+  const handleSaveRecruiterMessage = (
+    id: string,
+    generatedRecruiterMessage: string
+  ) => {
+    setJobs((prevJobs) =>
+      prevJobs.map((job) =>
+        job.id === id ? { ...job, generatedRecruiterMessage } : job
+      )
+    );
+
+    setSelectedJob((prevJob) =>
+      prevJob?.id === id ? { ...prevJob, generatedRecruiterMessage } : prevJob
+    );
+  };
+
+  const handleSaveJobAnalysis = (
+    id: string,
+    jobAnalysis: string
+  ) => {
+    setJobs((prevJobs) =>
+      prevJobs.map((job) =>
+        job.id === id ? { ...job, jobAnalysis } : job
+      )
+    );
+
+    setSelectedJob((prevJob) =>
+      prevJob?.id === id ? { ...prevJob, jobAnalysis } : prevJob
+    );
+  };
+
   const handleSaveNotes = (id: string, notes: string) => {
     setJobs((prevJobs) =>
       prevJobs.map((job) =>
@@ -98,7 +128,7 @@ function App() {
       )}
 
       {activeView === 'jobs' && (
-        <div className="grid min-w-0 grid-cols-[420px_1fr] gap-4">
+        <div className="grid h-full min-h-0 min-w-0 grid-cols-[420px_1fr] gap-4 overflow-hidden">
           <JobsPanel
             search={search}
             setSearch={setSearch}
@@ -112,7 +142,13 @@ function App() {
           />
 
           <section className="min-h-0 overflow-y-auto">
-            <JobDetailsPanel job={selectedJob} handleSaveLetter={handleSaveLetter} handleSaveNotes={handleSaveNotes} />
+            <JobDetailsPanel
+              job={selectedJob}
+              handleSaveLetter={handleSaveLetter}
+              handleSaveNotes={handleSaveNotes}
+              handleSaveRecruiterMessage={handleSaveRecruiterMessage}
+              handleSaveJobAnalysis={handleSaveJobAnalysis}
+            />
           </section>
         </div>
       )}
