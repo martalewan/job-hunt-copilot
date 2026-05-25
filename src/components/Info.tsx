@@ -13,10 +13,10 @@ export function Info({
 }: InfoProps) {
     return (
         <div className="flex items-center gap-2">
-            <span className="text-slate-500">{icon}</span>
+            <span className="faint">{icon}</span>
 
             <div>
-                <p className="text-[11px] text-slate-500">
+                <p className="faint text-[11px]">
                     {label}
                 </p>
 

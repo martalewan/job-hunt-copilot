@@ -20,30 +20,30 @@ export function JobDetailsHeader({ job }: Props) {
                         href={job.url}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-2 rounded-lg bg-white/5 px-3 py-2 text-xs text-white"
+                        className="accent-control inline-flex items-center gap-2 rounded-md px-3 py-2 text-xs"
                     >
                         <FiExternalLink />
                         Open Job
                     </a>
 
-                    <button className="rounded-lg bg-white/5 p-2">
+                    <button className="glass-control rounded-md p-2">
                         <FiBookmark />
                     </button>
 
-                    <button className="rounded-lg bg-white/5 p-2">
+                    <button className="glass-control rounded-md p-2">
                         <FiMoreHorizontal />
                     </button>
                 </div>
             </div>
 
             <div>
-                <p className="text-sm text-slate-300">{job.company}</p>
+                <p className="muted text-sm">{job.company}</p>
 
                 <h1 className="mt-1 text-3xl font-semibold text-white">
                     {job.title}
                 </h1>
 
-                <div className="mt-2 flex items-center gap-3 text-sm text-slate-400">
+                <div className="muted mt-2 flex items-center gap-3 text-sm">
                     <span className="inline-flex items-center gap-1">
                         <FiMapPin />
                         {job.location}
@@ -57,7 +57,7 @@ export function JobDetailsHeader({ job }: Props) {
                     {job.tags.map((tag) => (
                         <span
                             key={tag}
-                            className="rounded-md bg-white/10 px-3 py-1 text-xs"
+                            className="badge rounded-md px-3 py-1 text-xs"
                         >
                             {tag}
                         </span>

@@ -39,7 +39,7 @@ export function JobNotesCard({
                 {!isEditing ? (
                     <button
                         onClick={() => setIsEditing(true)}
-                        className="rounded-lg bg-white/10 p-2 text-slate-300 transition hover:bg-white/15 hover:text-white"
+                        className="glass-control rounded-md p-2 transition hover:text-white"
                     >
                         <FiEdit2 className="h-4 w-4" />
                     </button>
@@ -47,14 +47,14 @@ export function JobNotesCard({
                     <div className="flex gap-2">
                         <button
                             onClick={handleSave}
-                            className="rounded-lg bg-emerald-500/20 p-2 text-emerald-300 transition hover:bg-emerald-500/30"
+                            className="accent-control rounded-md p-2 transition"
                         >
                             <FiCheck className="h-4 w-4" />
                         </button>
 
                         <button
                             onClick={handleCancel}
-                            className="rounded-lg bg-red-500/20 p-2 text-red-300 transition hover:bg-red-500/30"
+                            className="glass-control rounded-md p-2 transition hover:text-white"
                         >
                             <FiX className="h-4 w-4" />
                         </button>
@@ -70,21 +70,19 @@ export function JobNotesCard({
                         placeholder="Add notes about this opportunity..."
                         className="
               min-h-40 w-full resize-none
-              rounded-2xl
-              border border-white/10
-              bg-white/5
+              glass-control
+              rounded-md
               p-4
               text-sm text-white
-              outline-none
-              placeholder:text-slate-500
+              placeholder:text-white/35
             "
                     />
                 ) : notes ? (
-                    <p className="whitespace-pre-wrap text-sm leading-6 text-slate-400">
+                    <p className="muted whitespace-pre-wrap text-sm leading-6">
                         {notes}
                     </p>
                 ) : (
-                    <p className="text-sm text-slate-500">
+                    <p className="faint text-sm">
                         No notes yet.
                     </p>
                 )}

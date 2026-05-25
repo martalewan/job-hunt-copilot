@@ -45,23 +45,23 @@ export function JobDocumentsTab({ job }: Props) {
                         <h3 className="text-sm font-semibold text-white">
                             Saved Documents
                         </h3>
-                        <p className="mt-1 text-xs text-slate-500">
+                        <p className="faint mt-1 text-xs">
                             AI-generated content saved for this job.
                         </p>
                     </div>
 
-                    <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-400">
+                    <span className="badge rounded-full px-3 py-1 text-xs">
                         {documents.length}
                     </span>
                 </div>
 
                 <div className="mt-5 space-y-3">
                     {documents.length === 0 ? (
-                        <div className="rounded-2xl border border-dashed border-white/10 bg-white/[0.03] p-5">
-                            <p className="text-sm text-slate-400">
+                        <div className="glass-control rounded-md border-dashed p-5">
+                            <p className="muted text-sm">
                                 No saved documents yet.
                             </p>
-                            <p className="mt-1 text-xs text-slate-500">
+                            <p className="faint mt-1 text-xs">
                                 Generate a motivation letter, recruiter message, or job analysis.
                             </p>
                         </div>
@@ -71,17 +71,13 @@ export function JobDocumentsTab({ job }: Props) {
                                 key={doc.title}
                                 onClick={() => setSelectedDocument(doc)}
                                 className="
-                  group w-full rounded-2xl
-                  border border-white/10
-                  bg-white/[0.04]
+                  glass-control group w-full rounded-md
                   p-4 text-left
                   transition
-                  hover:border-cyan-400/30
-                  hover:bg-cyan-400/[0.06]
                 "
                             >
                                 <div className="flex items-start gap-4">
-                                    <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-3 text-cyan-200">
+                                    <div className="badge-accent rounded-md p-3">
                                         <FiFileText className="h-5 w-5" />
                                     </div>
 
@@ -91,15 +87,15 @@ export function JobDocumentsTab({ job }: Props) {
                                                 <p className="text-sm font-medium text-white">
                                                     {doc.title}
                                                 </p>
-                                                <p className="mt-0.5 text-xs text-slate-500">
+                                                <p className="faint mt-0.5 text-xs">
                                                     {doc.label}
                                                 </p>
                                             </div>
 
-                                            <FiArrowUpRight className="h-4 w-4 shrink-0 text-slate-500 transition group-hover:text-cyan-200" />
+                                            <FiArrowUpRight className="faint h-4 w-4 shrink-0 transition group-hover:text-white" />
                                         </div>
 
-                                        <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-400">
+                                        <p className="muted mt-3 line-clamp-3 text-sm leading-6">
                                             {doc.content}
                                         </p>
                                     </div>

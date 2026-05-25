@@ -10,9 +10,9 @@ export function HomePage({ jobs }: HomePageProps) {
     const interestedJobs = jobs.filter((job) => job.status === 'interested');
 
     return (
-        <section className="h-full overflow-y-auto rounded-xs border border-white/10 bg-white/[0.03] p-6">
+        <section className="glass-panel h-full overflow-y-auto rounded-md p-6">
             <div>
-                <p className="text-sm uppercase tracking-[0.2em] text-slate-500">
+                <p className="faint text-sm uppercase tracking-[0.2em]">
                     Dashboard
                 </p>
 
@@ -20,7 +20,7 @@ export function HomePage({ jobs }: HomePageProps) {
                     Home
                 </h1>
 
-                <p className="mt-3 text-sm text-slate-400">
+                <p className="muted mt-3 text-sm">
                     Track your job search progress and focus on your next best move.
                 </p>
             </div>
@@ -31,12 +31,12 @@ export function HomePage({ jobs }: HomePageProps) {
                 <StatCard label="Interested" value={interestedJobs.length} />
             </div>
 
-            <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.04] p-5">
+            <div className="glass-panel mt-8 rounded-md p-5">
                 <h2 className="text-lg font-semibold text-white">
                     Today’s Focus
                 </h2>
 
-                <p className="mt-2 text-sm text-slate-400">
+                <p className="muted mt-2 text-sm">
                     Review your saved jobs, follow up on applications, and use AI to improve your next application.
                 </p>
             </div>
@@ -52,8 +52,8 @@ function StatCard({
     value: number;
 }) {
     return (
-        <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
-            <p className="text-sm text-slate-400">{label}</p>
+        <div className="glass-panel rounded-md p-5">
+            <p className="muted text-sm">{label}</p>
             <p className="mt-3 text-3xl font-semibold text-white">{value}</p>
         </div>
     );

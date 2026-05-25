@@ -29,7 +29,7 @@ export function Modal({
     return createPortal(
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4 backdrop-blur-md">
             <div
-                className={`h-[85vh] w-[90vw] ${maxWidthClasses[maxWidth]} rounded-[32px] border border-white/10 bg-[#111]/95 p-8 backdrop-blur-2xl`}
+                className={`glass-panel h-[85vh] w-[90vw] ${maxWidthClasses[maxWidth]} rounded-md p-8`}
             >
                 <div className="flex items-center justify-between gap-4">
                     <h2 className="min-w-0 flex-1 text-xl font-semibold text-white">
@@ -37,17 +37,17 @@ export function Modal({
                     </h2>
 
                     <div className="flex shrink-0 gap-2">
-                        <button onClick={copyContent} className="rounded-xl border border-white/10 px-3 py-2 text-sm text-slate-300 hover:bg-white/5">
+                        <button onClick={copyContent} className="glass-control rounded-md px-3 py-2 text-sm">
                             Copy
                         </button>
 
-                        <button onClick={onClose} className="rounded-xl border border-white/10 px-3 py-2 text-sm text-slate-300 hover:bg-white/5">
+                        <button onClick={onClose} className="glass-control rounded-md px-3 py-2 text-sm">
                             Close
                         </button>
                     </div>
                 </div>
 
-                <div className="mt-6 h-[calc(85vh-120px)] overflow-y-auto whitespace-pre-wrap text-sm leading-7 text-slate-300">
+                <div className="muted mt-6 h-[calc(85vh-120px)] overflow-y-auto whitespace-pre-wrap text-sm leading-7">
                     {content}
                 </div>
             </div>
