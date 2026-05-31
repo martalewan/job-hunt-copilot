@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 type AccountProfile = {
     name: string;
@@ -40,19 +41,11 @@ const defaultProfile: AccountProfile = {
 };
 
 export function AccountPage() {
-    const [profile, setProfile] = useState<AccountProfile>(loadProfile);
+    const [profile, setProfile, profileStorage] = useLocalStorage<AccountProfile>(
+        storageKey,
+        defaultProfile
+    );
     const [savedAt, setSavedAt] = useState<string | null>(null);
-    const [storageError, setStorageError] = useState('');
-
-    useEffect(() => {
-        try {
-            localStorage.setItem(storageKey, JSON.stringify(profile));
-            setStorageError('');
-        } catch (error) {
-            console.error('Account profile save error:', error);
-            setStorageError('Profile saved in memory only. The CV file is probably too large for browser storage.');
-        }
-    }, [profile]);
 
     const updateProfile = (key: keyof AccountProfile, value: string) => {
         setProfile((current) => ({ ...current, [key]: value }));
@@ -92,13 +85,8 @@ export function AccountPage() {
     };
 
     const handleSave = () => {
-        try {
-            localStorage.setItem(storageKey, JSON.stringify(profile));
+        if (profileStorage.saveNow(profile)) {
             setSavedAt(new Date().toLocaleTimeString());
-            setStorageError('');
-        } catch (error) {
-            console.error('Account profile save error:', error);
-            setStorageError('Could not save this profile. Try removing the CV or uploading a smaller file.');
         }
     };
 
@@ -133,9 +121,9 @@ export function AccountPage() {
                         </p>
                     )}
 
-                    {storageError && (
+                    {profileStorage.storageError && (
                         <p className="mt-2 max-w-xs text-xs text-[var(--status-rejected)]">
-                            {storageError}
+                            Profile saved in memory only. Try removing the CV or uploading a smaller file.
                         </p>
                     )}
                 </div>
@@ -234,19 +222,6 @@ export function AccountPage() {
             </AccountPanel>
         </section>
     );
-}
-
-function loadProfile(): AccountProfile {
-    try {
-        const saved = localStorage.getItem(storageKey);
-        if (!saved) return defaultProfile;
-
-        return { ...defaultProfile, ...JSON.parse(saved) };
-    } catch (error) {
-        console.error('Account profile load error:', error);
-        localStorage.removeItem(storageKey);
-        return defaultProfile;
-    }
 }
 
 function CvUpload({

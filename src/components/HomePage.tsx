@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import type { Job } from '../types/job';
 import { getMatchScore } from '../utils/estimateMatchScore';
 
@@ -6,15 +7,25 @@ type HomePageProps = {
 };
 
 export function HomePage({ jobs }: HomePageProps) {
-    const activeJobs = jobs.filter((job) => !job.archived);
-    const appliedJobs = jobs.filter((job) => job.status === 'applied');
-    const interestedJobs = jobs.filter((job) => job.status === 'interested');
-    const rejectedJobs = jobs.filter((job) => job.status === 'rejected');
-    const bestJobs = [...activeJobs]
-        .sort((a, b) => getMatchScore(b) - getMatchScore(a))
-        .slice(0, 3);
-    const averageScore = average(activeJobs.map(getMatchScore));
-    const pipelineTotal = Math.max(activeJobs.length, 1);
+    const stats = useMemo(() => {
+        const activeJobs = jobs.filter((job) => !job.archived);
+        const appliedJobs = jobs.filter((job) => job.status === 'applied');
+        const interestedJobs = jobs.filter((job) => job.status === 'interested');
+        const rejectedJobs = jobs.filter((job) => job.status === 'rejected');
+        const bestJobs = [...activeJobs]
+            .sort((a, b) => getMatchScore(b) - getMatchScore(a))
+            .slice(0, 3);
+
+        return {
+            activeJobs,
+            appliedJobs,
+            interestedJobs,
+            rejectedJobs,
+            bestJobs,
+            averageScore: average(activeJobs.map(getMatchScore)),
+            pipelineTotal: Math.max(activeJobs.length, 1),
+        };
+    }, [jobs]);
 
     return (
         <section className="glass-panel h-full overflow-y-auto rounded-md p-6">
@@ -36,20 +47,20 @@ export function HomePage({ jobs }: HomePageProps) {
 
                     <div className="mt-6 flex flex-wrap gap-2">
                         <span className="badge-accent rounded-full px-3 py-1 text-xs font-medium">
-                            {activeJobs.length} active jobs
+                            {stats.activeJobs.length} active jobs
                         </span>
                         <span className="badge rounded-full px-3 py-1 text-xs font-medium">
-                            {averageScore}% average match
+                            {stats.averageScore}% average match
                         </span>
                     </div>
                 </div>
             </div>
 
             <div className="animate-rise-delay mt-4 grid grid-cols-4 gap-4">
-                <StatCard label="Active Jobs" value={activeJobs.length} />
-                <StatCard label="Interested" value={interestedJobs.length} />
-                <StatCard label="Applied" value={appliedJobs.length} />
-                <StatCard label="Rejected" value={rejectedJobs.length} />
+                <StatCard label="Active Jobs" value={stats.activeJobs.length} />
+                <StatCard label="Interested" value={stats.interestedJobs.length} />
+                <StatCard label="Applied" value={stats.appliedJobs.length} />
+                <StatCard label="Rejected" value={stats.rejectedJobs.length} />
             </div>
 
             <div className="mt-4 grid grid-cols-[0.9fr_1.1fr] gap-4">
@@ -61,20 +72,20 @@ export function HomePage({ jobs }: HomePageProps) {
                     <div className="mt-5 space-y-4">
                         <PipelineBar
                             label="Interested"
-                            value={interestedJobs.length}
-                            total={pipelineTotal}
+                            value={stats.interestedJobs.length}
+                            total={stats.pipelineTotal}
                             className="status-interested"
                         />
                         <PipelineBar
                             label="Applied"
-                            value={appliedJobs.length}
-                            total={pipelineTotal}
+                            value={stats.appliedJobs.length}
+                            total={stats.pipelineTotal}
                             className="status-applied"
                         />
                         <PipelineBar
                             label="Rejected"
-                            value={rejectedJobs.length}
-                            total={pipelineTotal}
+                            value={stats.rejectedJobs.length}
+                            total={stats.pipelineTotal}
                             className="status-rejected"
                         />
                     </div>
@@ -89,8 +100,8 @@ export function HomePage({ jobs }: HomePageProps) {
                     </div>
 
                     <div className="mt-4 space-y-2">
-                        {bestJobs.length > 0 ? (
-                            bestJobs.map((job) => (
+                        {stats.bestJobs.length > 0 ? (
+                            stats.bestJobs.map((job) => (
                                 <div
                                     key={job.id}
                                     className="glass-control rounded-md p-3"
@@ -132,7 +143,7 @@ export function HomePage({ jobs }: HomePageProps) {
                     </div>
 
                     <span className="badge rounded-full px-3 py-1 text-xs font-medium">
-                        {interestedJobs.length || bestJobs.length} to review
+                        {stats.interestedJobs.length || stats.bestJobs.length} to review
                     </span>
                 </div>
             </div>

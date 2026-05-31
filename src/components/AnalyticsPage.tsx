@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import type { Job, JobStatus } from '../types/job';
 import { getMatchScore } from '../utils/estimateMatchScore';
 
@@ -19,32 +20,40 @@ const statusLabels: Record<JobStatus, string> = {
 };
 
 export function AnalyticsPage({ jobs }: AnalyticsPageProps) {
-    const activeJobs = jobs.filter((job) => !job.archived);
-    const appliedJobs = activeJobs.filter((job) => job.status === 'applied');
-    const interestedJobs = activeJobs.filter((job) => job.status === 'interested');
-    const averageScore = average(activeJobs.map(getMatchScore));
-    const fullDescriptions = activeJobs.filter((job) => job.descriptionType === 'full').length;
-    const previewDescriptions = activeJobs.filter((job) => job.descriptionType === 'preview').length;
+    const analytics = useMemo(() => {
+        const activeJobs = jobs.filter((job) => !job.archived);
+        const appliedJobs = activeJobs.filter((job) => job.status === 'applied');
+        const interestedJobs = activeJobs.filter((job) => job.status === 'interested');
+        const fullDescriptions = activeJobs.filter((job) => job.descriptionType === 'full').length;
+        const previewDescriptions = activeJobs.filter((job) => job.descriptionType === 'preview').length;
 
-    const pipeline = [
-        { label: 'New', value: countStatus(activeJobs, 'new'), className: 'status-new' },
-        { label: 'Interested', value: interestedJobs.length, className: 'status-interested' },
-        { label: 'Applied', value: appliedJobs.length, className: 'status-applied' },
-        { label: 'Rejected', value: countStatus(activeJobs, 'rejected'), className: 'status-rejected' },
-        { label: 'Archived', value: jobs.filter((job) => job.archived).length, className: 'status-archived' },
-    ];
-
-    const sources = topBreakdown(
-        activeJobs.map((job) => job.source || 'Unknown'),
-        6
-    );
-    const skills = topBreakdown(
-        activeJobs.flatMap((job) => job.tags || []),
-        8
-    );
-    const bestMatches = [...activeJobs]
-        .sort((a, b) => getMatchScore(b) - getMatchScore(a))
-        .slice(0, 5);
+        return {
+            activeJobs,
+            appliedJobs,
+            interestedJobs,
+            averageScore: average(activeJobs.map(getMatchScore)),
+            fullDescriptions,
+            previewDescriptions,
+            pipeline: [
+                { label: 'New', value: countStatus(activeJobs, 'new'), className: 'status-new' },
+                { label: 'Interested', value: interestedJobs.length, className: 'status-interested' },
+                { label: 'Applied', value: appliedJobs.length, className: 'status-applied' },
+                { label: 'Rejected', value: countStatus(activeJobs, 'rejected'), className: 'status-rejected' },
+                { label: 'Archived', value: jobs.filter((job) => job.archived).length, className: 'status-archived' },
+            ],
+            sources: topBreakdown(
+                activeJobs.map((job) => job.source || 'Unknown'),
+                6
+            ),
+            skills: topBreakdown(
+                activeJobs.flatMap((job) => job.tags || []),
+                8
+            ),
+            bestMatches: [...activeJobs]
+                .sort((a, b) => getMatchScore(b) - getMatchScore(a))
+                .slice(0, 5),
+        };
+    }, [jobs]);
 
     return (
         <section className="glass-panel h-full overflow-y-auto rounded-md p-6">
@@ -64,48 +73,48 @@ export function AnalyticsPage({ jobs }: AnalyticsPageProps) {
                 </div>
 
                 <span className="badge-accent rounded-full px-4 py-2 text-sm font-medium">
-                    {activeJobs.length} active jobs
+                    {analytics.activeJobs.length} active jobs
                 </span>
             </div>
 
             <div className="mt-8 grid grid-cols-4 gap-3">
-                <MetricCard label="Average match" value={`${averageScore}%`} />
-                <MetricCard label="Applied" value={appliedJobs.length} />
-                <MetricCard label="Interested" value={interestedJobs.length} />
+                <MetricCard label="Average match" value={`${analytics.averageScore}%`} />
+                <MetricCard label="Applied" value={analytics.appliedJobs.length} />
+                <MetricCard label="Interested" value={analytics.interestedJobs.length} />
                 <MetricCard
                     label="Full descriptions"
-                    value={`${percentage(fullDescriptions, activeJobs.length)}%`}
+                    value={`${percentage(analytics.fullDescriptions, analytics.activeJobs.length)}%`}
                 />
             </div>
 
             <div className="mt-4 grid grid-cols-[1.15fr_0.85fr] gap-4">
                 <AnalyticsPanel title="Pipeline">
-                    <BreakdownList items={pipeline} total={jobs.length || 1} />
+                    <BreakdownList items={analytics.pipeline} total={jobs.length || 1} />
                 </AnalyticsPanel>
 
                 <AnalyticsPanel title="Description Quality">
                     <BreakdownList
                         items={[
-                            { label: 'Full descriptions', value: fullDescriptions },
-                            { label: 'Preview only', value: previewDescriptions },
+                            { label: 'Full descriptions', value: analytics.fullDescriptions },
+                            { label: 'Preview only', value: analytics.previewDescriptions },
                             {
                                 label: 'Missing',
-                                value: activeJobs.length - fullDescriptions - previewDescriptions,
+                                value: analytics.activeJobs.length - analytics.fullDescriptions - analytics.previewDescriptions,
                             },
                         ]}
-                        total={activeJobs.length || 1}
+                        total={analytics.activeJobs.length || 1}
                     />
                 </AnalyticsPanel>
             </div>
 
             <div className="mt-4 grid grid-cols-2 gap-4">
                 <AnalyticsPanel title="Sources">
-                    <BreakdownList items={sources} total={activeJobs.length || 1} />
+                    <BreakdownList items={analytics.sources} total={analytics.activeJobs.length || 1} />
                 </AnalyticsPanel>
 
                 <AnalyticsPanel title="Top Skills">
                     <div className="flex flex-wrap gap-2">
-                        {skills.map((skill) => (
+                        {analytics.skills.map((skill) => (
                             <span
                                 key={skill.label}
                                 className="badge rounded-md px-3 py-2 text-xs font-medium"
@@ -120,7 +129,7 @@ export function AnalyticsPage({ jobs }: AnalyticsPageProps) {
 
             <AnalyticsPanel title="Best Opportunities" className="mt-4">
                 <div className="space-y-2">
-                    {bestMatches.map((job) => (
+                    {analytics.bestMatches.map((job) => (
                         <div
                             key={job.id}
                             className="glass-control grid grid-cols-[1fr_auto_auto] items-center gap-4 rounded-md p-3"
