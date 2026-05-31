@@ -5,6 +5,8 @@ import { JobFilters } from "./JobFilters";
 import { JobList } from "./JobList";
 import type { ScrapedJobsMeta } from "../services/scrapedJobs";
 import { FiDownload, FiRefreshCw } from "react-icons/fi";
+import type { SavedSearch, SearchRun } from "../types/search";
+import { JobSearchManager } from "./JobSearchManager";
 
 type JobsPanelProps = {
     search: string;
@@ -18,6 +20,12 @@ type JobsPanelProps = {
     setActiveView: (view: string) => void;
     jobs: Job[];
     jobsMeta: ScrapedJobsMeta | null;
+    savedSearches: SavedSearch[];
+    activeSearchId: string;
+    searchRuns: SearchRun[];
+    setActiveSearchId: (id: string) => void;
+    handleChangeSavedSearch: (search: SavedSearch) => void;
+    handleAddSavedSearch: () => void;
 };
 
 export function JobsPanel({
@@ -32,6 +40,12 @@ export function JobsPanel({
     setActiveView,
     jobs,
     jobsMeta,
+    savedSearches,
+    activeSearchId,
+    searchRuns,
+    setActiveSearchId,
+    handleChangeSavedSearch,
+    handleAddSavedSearch,
 }: JobsPanelProps) {
     const activeJobsCount = jobs.filter((job) => !job.archived).length;
 
@@ -82,6 +96,17 @@ export function JobsPanel({
                         </button>
                     </div>
                 </div>
+
+                <JobSearchManager
+                    savedSearches={savedSearches}
+                    activeSearchId={activeSearchId}
+                    searchRuns={searchRuns}
+                    isImporting={isImporting}
+                    onSelectSearch={setActiveSearchId}
+                    onChangeSearch={handleChangeSavedSearch}
+                    onAddSearch={handleAddSavedSearch}
+                    onRunSearch={handleImportJobs}
+                />
 
                 <div className="pt-1">
                     <JobFilters search={search} setSearch={setSearch} />

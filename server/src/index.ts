@@ -23,10 +23,11 @@ const CACHE_DURATION_MS = 30 * 60 * 1000;
 
 let jobsCache:
     | {
-        createdAt: number;
-        jobs: any[];
-        sourceCounts: Record<string, number>;
-    }
+          createdAt: number;
+          key: string;
+          jobs: any[];
+          sourceCounts: Record<string, number>;
+      }
     | null = null;
 
 app.use(cors());
@@ -37,10 +38,17 @@ app.use('/api/companies', companyRoutes);
 app.get('/api/jobs', async (req, res) => {
     try {
         const refresh = req.query.refresh === 'true';
+        const searchOptions = {
+            keywords: String(req.query.query || 'frontend'),
+            location: String(req.query.location || 'Paris'),
+            target: Number(req.query.target || 350),
+        };
+        const cacheKey = JSON.stringify(searchOptions);
 
         if (
             !refresh &&
             jobsCache &&
+            jobsCache.key === cacheKey &&
             Date.now() - jobsCache.createdAt < CACHE_DURATION_MS
         ) {
             res.json({
@@ -61,8 +69,8 @@ app.get('/api/jobs', async (req, res) => {
             scrapeRemoteOk(),
             scrapeWeAreDevelopers(),
             scrapeWelcomeToTheJungle(),
-            scrapeJooble(),
-            scrapeFranceTravail(),
+            scrapeJooble(searchOptions),
+            scrapeFranceTravail(searchOptions),
         ]);
 
         const sourceNames = [
@@ -113,6 +121,7 @@ app.get('/api/jobs', async (req, res) => {
 
         jobsCache = {
             createdAt: Date.now(),
+            key: cacheKey,
             jobs: rankedJobs,
             sourceCounts,
         };

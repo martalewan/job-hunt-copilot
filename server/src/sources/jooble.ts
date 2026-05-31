@@ -16,7 +16,13 @@ type JoobleResponse = {
     jobs?: JoobleJob[];
 };
 
-export async function scrapeJooble(): Promise<ScrapedJob[]> {
+type SearchOptions = {
+    keywords?: string;
+    location?: string;
+    target?: number;
+};
+
+export async function scrapeJooble(options: SearchOptions = {}): Promise<ScrapedJob[]> {
     const apiKey = process.env.JOOBLE_API_KEY;
 
     if (!apiKey) {
@@ -24,12 +30,12 @@ export async function scrapeJooble(): Promise<ScrapedJob[]> {
         return [];
     }
 
-    const pages = 7;
+    const pages = Math.max(1, Math.ceil((options.target ?? 350) / 50));
     const perPage = 50;
 
     const results = await Promise.all(
         Array.from({ length: pages }, (_, index) =>
-            fetchJooblePage(apiKey, index + 1, perPage)
+            fetchJooblePage(apiKey, index + 1, perPage, options)
         )
     );
 
@@ -39,7 +45,8 @@ export async function scrapeJooble(): Promise<ScrapedJob[]> {
 async function fetchJooblePage(
     apiKey: string,
     page: number,
-    perPage: number
+    perPage: number,
+    options: SearchOptions
 ): Promise<ScrapedJob[]> {
     const response = await fetch(`https://fr.jooble.org/api/${apiKey}`, {
         method: 'POST',
@@ -48,8 +55,8 @@ async function fetchJooblePage(
             Accept: 'application/json',
         },
         body: JSON.stringify({
-            keywords: 'frontend',
-            location: 'Paris',
+            keywords: options.keywords || 'frontend',
+            location: options.location || 'Paris',
             radius: '40',
             page: String(page),
             ResultOnPage: String(perPage),

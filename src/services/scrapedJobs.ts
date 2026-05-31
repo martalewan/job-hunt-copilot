@@ -25,13 +25,27 @@ export type ScrapedJobsMeta = {
     total?: number;
 };
 
-export async function fetchScrapedJobs(options: { refresh?: boolean } = {}): Promise<{
+export async function fetchScrapedJobs(options: {
+    refresh?: boolean;
+    keywords?: string;
+    location?: string;
+    target?: number;
+} = {}): Promise<{
     jobs: Job[];
     meta?: ScrapedJobsMeta;
 }> {
     const url = new URL(`${API_BASE_URL}/api/jobs`);
     if (options.refresh) {
         url.searchParams.set('refresh', 'true');
+    }
+    if (options.keywords) {
+        url.searchParams.set('query', options.keywords);
+    }
+    if (options.location) {
+        url.searchParams.set('location', options.location);
+    }
+    if (options.target) {
+        url.searchParams.set('target', String(options.target));
     }
 
     const response = await fetch(

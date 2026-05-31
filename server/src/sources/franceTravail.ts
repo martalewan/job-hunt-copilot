@@ -28,7 +28,13 @@ let tokenCache: {
     expiresAt: number;
 } | null = null;
 
-export async function scrapeFranceTravail(): Promise<ScrapedJob[]> {
+type SearchOptions = {
+    keywords?: string;
+    location?: string;
+    target?: number;
+};
+
+export async function scrapeFranceTravail(options: SearchOptions = {}): Promise<ScrapedJob[]> {
     const clientId = process.env.FRANCE_TRAVAIL_CLIENT_ID;
     const clientSecret = process.env.FRANCE_TRAVAIL_CLIENT_SECRET;
 
@@ -44,9 +50,11 @@ export async function scrapeFranceTravail(): Promise<ScrapedJob[]> {
         'https://api.francetravail.io/partenaire/offresdemploi/v2/offres/search'
     );
 
-    url.searchParams.set('motsCles', 'frontend');
-    url.searchParams.set('lieux', 'Paris');
-    url.searchParams.set('range', '0-149');
+    const maxResultIndex = Math.min(Math.max((options.target ?? 150) - 1, 0), 149);
+
+    url.searchParams.set('motsCles', options.keywords || 'frontend');
+    url.searchParams.set('lieux', options.location || 'Paris');
+    url.searchParams.set('range', `0-${maxResultIndex}`);
 
     const response = await fetch(url, {
         headers: {
