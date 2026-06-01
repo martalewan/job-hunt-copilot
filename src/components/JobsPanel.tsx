@@ -4,9 +4,10 @@ import { FilterChips } from "./FilterChips";
 import { JobFilters } from "./JobFilters";
 import { JobList } from "./JobList";
 import type { ScrapedJobsMeta } from "../services/scrapedJobs";
-import { FiDownload, FiRefreshCw } from "react-icons/fi";
+import { FiDownload, FiRefreshCw, FiSettings } from "react-icons/fi";
 import type { SavedSearch, SearchRun } from "../types/search";
 import { JobSearchManager } from "./JobSearchManager";
+import { useState } from "react";
 
 type JobsPanelProps = {
     search: string;
@@ -48,6 +49,7 @@ export function JobsPanel({
     handleAddSavedSearch,
 }: JobsPanelProps) {
     const activeJobsCount = jobs.filter((job) => !job.archived).length;
+    const [showSearchManager, setShowSearchManager] = useState(false);
 
     return (
         <section className="glass-panel flex min-h-0 flex-1 flex-col rounded-xs p-6">
@@ -73,6 +75,14 @@ export function JobsPanel({
 
                     <div className="flex items-center gap-1.5">
                         <button
+                            onClick={() => { showSearchManager ? setShowSearchManager(false) : setShowSearchManager(true) }}
+                            title="Settings manager"
+                            aria-label="Settings manager"
+                            className="glass-control inline-flex h-9 w-9 items-center justify-center rounded-md transition disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                            <FiSettings className="h-4 w-4" />
+                        </button>
+                        <button
                             onClick={() => handleImportJobs()}
                             disabled={isImporting}
                             title="Import jobs"
@@ -97,7 +107,7 @@ export function JobsPanel({
                     </div>
                 </div>
 
-                <JobSearchManager
+                {showSearchManager ? <JobSearchManager
                     savedSearches={savedSearches}
                     activeSearchId={activeSearchId}
                     searchRuns={searchRuns}
@@ -106,7 +116,7 @@ export function JobsPanel({
                     onChangeSearch={handleChangeSavedSearch}
                     onAddSearch={handleAddSavedSearch}
                     onRunSearch={handleImportJobs}
-                />
+                /> : null}
 
                 <div className="pt-1">
                     <JobFilters search={search} setSearch={setSearch} />
